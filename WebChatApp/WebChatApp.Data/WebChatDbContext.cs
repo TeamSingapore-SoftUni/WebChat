@@ -4,13 +4,13 @@
 
     using Microsoft.AspNet.Identity.EntityFramework;
 
-    using WebChat.Models;
     using WebChat.Data.Migrations;
+    using WebChat.Models;
 
     public class WebChatDbContext : IdentityDbContext<WebChatUser>
     {
         public WebChatDbContext()
-            : base("DefaultConnection", false)
+            : base("WebChatApp", false)
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<WebChatDbContext, Configuration>());
         }
