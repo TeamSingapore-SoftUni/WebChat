@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace WebChat.Web.Models
+﻿namespace WebChat.Web.Models
 {
+    using System.Collections.Generic;
+
     // Models returned by AccountController actions.
 
     public class ExternalLoginViewModel

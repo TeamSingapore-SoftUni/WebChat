@@ -1,37 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http;
-using System.Web.Http.ModelBinding;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.OAuth;
-using WebChat.Models;
-using WebChat.Web.Models;
-using WebChat.Web.Providers;
-using WebChat.Web.Results;
-
-namespace WebChat.Web.Controllers
+﻿namespace WebChat.Web.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Security.Claims;
+    using System.Security.Cryptography;
+    using System.Threading.Tasks;
+    using System.Web;
+    using System.Web.Http;
+
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Microsoft.AspNet.Identity.Owin;
+    using Microsoft.Owin.Security;
+    using Microsoft.Owin.Security.Cookies;
+    using Microsoft.Owin.Security.OAuth;
+
+    using WebChat.Models;
+    using WebChat.Web.Models;
+    using WebChat.Web.Providers;
+    using WebChat.Web.Results;
+
     [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
         private const string LocalLoginProvider = "Local";
-        private WebChatUserManager _userManager;
+        private WebChatUserManager userManager;
 
         public AccountController()
         {
         }
 
-        public AccountController(WebChatUserManager userManager,
+        public AccountController(
+            WebChatUserManager userManager,
             ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
         {
             UserManager = userManager;
@@ -42,11 +44,12 @@ namespace WebChat.Web.Controllers
         {
             get
             {
-                return _userManager ?? Request.GetOwinContext().GetUserManager<WebChatUserManager>();
+                return this.userManager ?? Request.GetOwinContext().GetUserManager<WebChatUserManager>();
             }
+
             private set
             {
-                _userManager = value;
+                this.userManager = value;
             }
         }
 
@@ -71,22 +74,22 @@ namespace WebChat.Web.Controllers
         [Route("Logout")]
         public IHttpActionResult Logout()
         {
-            Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
-            return Ok();
+            this.Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
+            return this.Ok();
         }
 
         // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
         [Route("ManageInfo")]
         public async Task<ManageInfoViewModel> GetManageInfo(string returnUrl, bool generateState = false)
         {
-            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            IdentityUser user = await this.UserManager.FindByIdAsync(User.Identity.GetUserId());
 
             if (user == null)
             {
                 return null;
             }
 
-            List<UserLoginInfoViewModel> logins = new List<UserLoginInfoViewModel>();
+            var logins = new List<UserLoginInfoViewModel>();
 
             foreach (IdentityUserLogin linkedAccount in user.Logins)
             {
@@ -376,10 +379,10 @@ namespace WebChat.Web.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && _userManager != null)
+            if (disposing && this.userManager != null)
             {
-                _userManager.Dispose();
-                _userManager = null;
+                this.userManager.Dispose();
+                this.userManager = null;
             }
 
             base.Dispose(disposing);
