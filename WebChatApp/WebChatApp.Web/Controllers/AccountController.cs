@@ -332,7 +332,7 @@
                 return BadRequest(ModelState);
             }
 
-            var user = new WebChatUser() { UserName = model.Email, Email = model.Email };
+            var user = new WebChatUser() { UserName = model.UserName, Email = model.Email };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 

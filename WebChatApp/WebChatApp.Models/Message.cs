@@ -24,7 +24,8 @@
  
         public virtual WebChatUser User { get; set; }
 
-        public string ChatroomId { get; set; }
+        [Required]
+        public Guid ChatroomId { get; set; }
 
         public virtual Chatroom Chatroom { get; set; }
     }
