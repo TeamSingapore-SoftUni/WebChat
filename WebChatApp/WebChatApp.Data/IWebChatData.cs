@@ -7,7 +7,9 @@
     {
         IRepository<WebChatUser> Users { get; }
 
-        // IRepository<Chatroom> Chatrooms { get; }
+        IRepository<Chatroom> Chatrooms { get; }
+
+        IRepository<Message> Messages { get; }
 
         int SaveChanges();
     }   

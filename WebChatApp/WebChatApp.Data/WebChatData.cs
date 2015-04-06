@@ -23,10 +23,15 @@
             get { return this.GetRepository<WebChatUser>(); }
         }
 
-        //public IRepository<Chatroom> Chatrooms
-        //{
-        //    get { return this.GetRepository<Chatroom>(); }
-        //}
+        public IRepository<Chatroom> Chatrooms
+        {
+            get { return this.GetRepository<Chatroom>(); }
+        }
+
+        public IRepository<Message> Messages
+        {
+            get { return this.GetRepository<Message>(); }
+        }
 
         public int SaveChanges()
         {
