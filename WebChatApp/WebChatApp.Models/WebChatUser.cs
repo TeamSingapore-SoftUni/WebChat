@@ -10,16 +10,24 @@
     public class WebChatUser : IdentityUser
     {
         private ICollection<Message> messages;
+        private ICollection<Chatroom> chatrooms;
 
         public WebChatUser()
         {
             this.messages = new HashSet<Message>();
+            this.chatrooms = new HashSet<Chatroom>();
         }
 
         public virtual ICollection<Message> Messages
         {
             get { return this.messages; }
             set { this.messages = value; }
+        }
+
+        public virtual ICollection<Chatroom> Chatrooms
+        {
+            get { return this.chatrooms; }
+            set { this.chatrooms = value; }
         }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<WebChatUser> manager, string authenticationType)
