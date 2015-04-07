@@ -37,6 +37,10 @@
         public string UserName { get; set; }
 
         [Required]
+        [Display(Name = "FullName")]
+        public string FullName { get; set; }
+
+        [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
@@ -50,6 +54,10 @@
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "ImageDataURL")]
+        [RegularExpression("^data:image/.*$", ErrorMessage = "The image data should be valid Data URL, e.g. data:image/jpeg;base64,iVBORw0KGgo...")]
+        public string ImageDataURL { get; set; }
     }
 
     public class RegisterExternalBindingModel

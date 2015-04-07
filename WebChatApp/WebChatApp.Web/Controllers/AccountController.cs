@@ -65,6 +65,7 @@
             return new UserInfoViewModel
             {
                 Email = User.Identity.GetUserName(),
+                UserName = User.Identity.Name,
                 HasRegistered = externalLogin == null,
                 LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
             };
@@ -332,7 +333,13 @@
                 return BadRequest(ModelState);
             }
 
-            var user = new WebChatUser() { UserName = model.UserName, Email = model.Email };
+            var user = new WebChatUser()
+            { 
+                UserName = model.UserName,
+                Email = model.Email, 
+                FullName = model.FullName, 
+                ImageDataURL = model.ImageDataURL 
+            };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 

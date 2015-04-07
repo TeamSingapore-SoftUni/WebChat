@@ -1,6 +1,7 @@
 ﻿namespace WebChat.Models
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Security.Claims;
     using System.Threading.Tasks;
     
@@ -18,6 +19,13 @@
             this.chatrooms = new HashSet<Chatroom>();
         }
 
+        [Required]
+        [MaxLength(50)]
+        [MinLength(2)]
+        public string FullName { get; set; }
+
+        public string ImageDataURL { get; set; }
+     
         public virtual ICollection<Message> Messages
         {
             get { return this.messages; }

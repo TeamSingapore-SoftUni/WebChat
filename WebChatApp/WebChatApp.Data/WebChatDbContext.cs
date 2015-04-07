@@ -18,7 +18,6 @@
 
         public IDbSet<Chatroom> Chatroom { get; set; }
 
-
         public static WebChatDbContext Create()
         {
             return new WebChatDbContext();

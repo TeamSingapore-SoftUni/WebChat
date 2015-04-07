@@ -3,9 +3,24 @@
     using System.Collections.Generic;
     using System.Web.Http;
 
+    using WebChat.Data;
+    using WebChat.Models;
+
     [Authorize]
-    public class ValuesController : ApiController
+    public class ChatroomController : ApiController
     {
+        private IWebChatData data;
+
+        public ChatroomController()
+            :this (new WebChatData(new WebChatDbContext()))
+        {
+        }
+
+        public ChatroomController(IWebChatData data)
+        {
+            this.data = data;
+        }
+       
         // GET api/values
         public IEnumerable<string> Get()
         {
