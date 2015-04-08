@@ -1,8 +1,8 @@
 ﻿namespace WebChat.Web.Models
 {
-    using System.ComponentModel.DataAnnotations;
+   using System.ComponentModel.DataAnnotations;
 
-    public class RegisterBindingModel
+   public class RegisterBindingModel
     {
         [Required]
         [Display(Name = "Username")]

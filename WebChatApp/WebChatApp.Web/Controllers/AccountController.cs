@@ -1,14 +1,16 @@
-﻿namespace WebChat.Web.Controllers
+﻿using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+
+namespace WebChat.Web.Controllers
 {
-    using System;
     using System.Net.Http;
-    using System.Security.Cryptography;
     using System.Threading.Tasks;
-    using System.Web;
     using System.Web.Http;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin.Security;
+    using Microsoft.Owin.Security.Cookies;
     using WebChat.Models;
     using WebChat.Web.Models;
 
@@ -46,6 +48,40 @@
 
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
+        // TODO: 
+        // POST api/Account/Login
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[Route("Login")]
+
+        // POST api/Account/Register
+        [AllowAnonymous]
+        [Route("Register")]
+        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = new WebChatUser()
+            {
+                UserName = model.UserName,
+                Email = model.Email,
+                FullName = model.FullName,
+                ImageDataURL = model.ImageDataURL
+            };
+
+            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+
+            return Ok();
+        }
+
         // POST api/Account/ChangePassword
         [Route("ChangePassword")]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
@@ -66,32 +102,28 @@
             return Ok();
         }
 
-        // POST api/Account/Register
-        [AllowAnonymous]
-        [Route("Register")]
-        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        // GET api/Account/UserInfo
+        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
+        [Route("UserInfo")]
+        public UserInfoViewModel GetUserInfo()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
 
-            var user = new WebChatUser()
-            { 
-                UserName = model.UserName,
-                Email = model.Email, 
-                FullName = model.FullName, 
-                ImageDataURL = model.ImageDataURL 
+            return new UserInfoViewModel
+            {
+                Email = User.Identity.GetUserName(),
+                UserName = User.Identity.Name,
+                HasRegistered = externalLogin == null,
+                LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
             };
+        }
 
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            return Ok();
+        // POST api/Account/Logout
+        [Route("Logout")]
+        public IHttpActionResult Logout()
+        {
+            this.Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
+            return this.Ok();
         }
 
         protected override void Dispose(bool disposing)
@@ -104,8 +136,6 @@
 
             base.Dispose(disposing);
         }
-
-        #region Helpers
 
         private IAuthenticationManager Authentication
         {
@@ -141,27 +171,52 @@
             return null;
         }
 
-        private static class RandomOAuthStateGenerator
+        private class ExternalLoginData
         {
-            private static RandomNumberGenerator _random = new RNGCryptoServiceProvider();
+            public string LoginProvider { get; set; }
+            public string ProviderKey { get; set; }
+            public string UserName { get; set; }
 
-            public static string Generate(int strengthInBits)
+            public IList<Claim> GetClaims()
             {
-                const int bitsPerByte = 8;
+                IList<Claim> claims = new List<Claim>();
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, ProviderKey, null, LoginProvider));
 
-                if (strengthInBits % bitsPerByte != 0)
+                if (UserName != null)
                 {
-                    throw new ArgumentException("strengthInBits must be evenly divisible by 8.", "strengthInBits");
+                    claims.Add(new Claim(ClaimTypes.Name, UserName, null, LoginProvider));
                 }
 
-                int strengthInBytes = strengthInBits / bitsPerByte;
+                return claims;
+            }
 
-                byte[] data = new byte[strengthInBytes];
-                _random.GetBytes(data);
-                return HttpServerUtility.UrlTokenEncode(data);
+            public static ExternalLoginData FromIdentity(ClaimsIdentity identity)
+            {
+                if (identity == null)
+                {
+                    return null;
+                }
+
+                Claim providerKeyClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
+
+                if (providerKeyClaim == null || String.IsNullOrEmpty(providerKeyClaim.Issuer)
+                    || String.IsNullOrEmpty(providerKeyClaim.Value))
+                {
+                    return null;
+                }
+
+                if (providerKeyClaim.Issuer == ClaimsIdentity.DefaultIssuer)
+                {
+                    return null;
+                }
+
+                return new ExternalLoginData
+                {
+                    LoginProvider = providerKeyClaim.Issuer,
+                    ProviderKey = providerKeyClaim.Value,
+                    UserName = identity.FindFirstValue(ClaimTypes.Name)
+                };
             }
         }
-
-        #endregion
     }
 }
