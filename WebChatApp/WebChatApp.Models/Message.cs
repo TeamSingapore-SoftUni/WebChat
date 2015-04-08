@@ -20,11 +20,11 @@
         [Required]
         public DateTime DateTime { get; set; }
 
+        [Required]
         public string UserId { get; set; }
  
         public virtual WebChatUser User { get; set; }
 
-        [Required]
         public Guid ChatroomId { get; set; }
 
         public virtual Chatroom Chatroom { get; set; }
