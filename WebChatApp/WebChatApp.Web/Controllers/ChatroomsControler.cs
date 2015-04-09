@@ -16,16 +16,18 @@
 
     [Authorize]
     [RoutePrefix("api/Chatroom")]
-    public class ChatroomController : BaseApiController
+    public class ChatroomController : ApiController
     {
+        private IWebChatData data;
+
         public ChatroomController()
-            : base(new WebChatData())
+            : this(new WebChatData(new WebChatDbContext()))
         {
         }
 
         public ChatroomController(IWebChatData data)
-            :base(new WebChatData())
         {
+            this.data = data;
         }
 
         // get api/chatroom/byName?name={name}
@@ -33,22 +35,22 @@
         [Route("byName")]
         public IHttpActionResult GetChatroomByName(string name)
         {
-            var chatroom = this.Data.Chatrooms.All().FirstOrDefault(c => c.Name == name);
+            var chatroom = this.data.Chatrooms.All().FirstOrDefault(c => c.Name == name);
 
             if (chatroom != null)
             {
                 return this.Ok(new ChatroomViewModel
+                {
+                    Id = chatroom.Id,
+                    Name = chatroom.Name,
+                    Users = chatroom.Users.Select(u => new UserInfoViewModel
                     {
-                        Id = chatroom.Id,
-                        Name = chatroom.Name,
-                        Users = chatroom.Users.Select(u => new UserInfoViewModel
-                            {
-                                Id = new Guid(u.Id),
-                                FullName = u.FullName,
-                                UserName = u.UserName,
-                                Email = u.Email,
-                            }).ToList()
-                    });
+                        Id = new Guid(u.Id),
+                        FullName = u.FullName,
+                        UserName = u.UserName,
+                        Email = u.Email,
+                    }).ToList()
+                });
             }
 
             return this.BadRequest();
@@ -60,22 +62,22 @@
         public IHttpActionResult GetChatroomById(string id)
         {
             var idToGuid = new Guid(id);
-            var chatroom = this.Data.Chatrooms.All().FirstOrDefault(c => c.Id == idToGuid);
+            var chatroom = this.data.Chatrooms.All().FirstOrDefault(c => c.Id == idToGuid);
 
             if (chatroom != null)
             {
                 return this.Ok(new ChatroomViewModel
+                {
+                    Id = chatroom.Id,
+                    Name = chatroom.Name,
+                    Users = chatroom.Users.Select(u => new UserInfoViewModel
                     {
-                        Id = chatroom.Id,
-                        Name = chatroom.Name,
-                        Users = chatroom.Users.Select(u => new UserInfoViewModel
-                            {
-                                Id = new Guid(u.Id),
-                                FullName = u.FullName,
-                                UserName = u.UserName,
-                                Email = u.Email,
-                            }).ToList()
-                    });
+                        Id = new Guid(u.Id),
+                        FullName = u.FullName,
+                        UserName = u.UserName,
+                        Email = u.Email,
+                    }).ToList()
+                });
             }
 
             return this.BadRequest();
@@ -86,7 +88,7 @@
         [Route("All")]
         public IHttpActionResult GetAllChatrooms()
         {
-            var chatrooms = this.Data.Chatrooms
+            var chatrooms = this.data.Chatrooms
                 .All()
                 .Select(c => new
                 {
@@ -106,7 +108,7 @@
         {
             // get the use creating the chatroom
             var userId = HttpContext.Current.User.Identity.GetUserId();
-            var user = this.Data.Users.Find(userId);
+            var user = this.data.Users.Find(userId);
 
             if (!this.ModelState.IsValid)
             {
@@ -119,21 +121,23 @@
             };
 
             chatroom.Users.Add(user);
-            this.Data.Chatrooms.Add(chatroom);
-            this.Data.SaveChanges();
+            this.data.Chatrooms.Add(chatroom);
+            this.data.SaveChanges();
 
             return this.Ok(new
+            {
+                message = "Chatroom created successfully.",
+                chatroom = new ChatroomViewModel
                 {
-                    message = "Chatroom created successfully.",
-                    chatroom = new ChatroomViewModel
-                    {
-                        Id = chatroom.Id,
-                        Name = chatroom.Name,
-                    }
-                });
+                    Id = chatroom.Id,
+                    Name = chatroom.Name,
+                }
+            });
         }
 
-         // PUT api/values/5
+
+
+        // PUT api/values/5
         public void Put(int id, [FromBody]string value)
         {
         }
