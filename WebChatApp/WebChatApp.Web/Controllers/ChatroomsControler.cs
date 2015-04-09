@@ -16,18 +16,16 @@
 
     [Authorize]
     [RoutePrefix("api/Chatroom")]
-    public class ChatroomController : ApiController
+    public class ChatroomController : BaseApiController
     {
-        private IWebChatData data;
-
         public ChatroomController()
-            : this(new WebChatData(new WebChatDbContext()))
+            : base(new WebChatData())
         {
         }
 
         public ChatroomController(IWebChatData data)
+            :base(new WebChatData())
         {
-            this.data = data;
         }
 
         // get api/chatroom/byName?name={name}

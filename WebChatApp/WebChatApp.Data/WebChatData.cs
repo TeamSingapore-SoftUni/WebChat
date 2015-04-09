@@ -12,6 +12,11 @@
         private DbContext context;
         private IDictionary<Type, object> repositories;
 
+        public WebChatData()
+            :this(new WebChatDbContext())
+        {
+            
+        }
         public WebChatData(DbContext context)
         {
             this.context = context;

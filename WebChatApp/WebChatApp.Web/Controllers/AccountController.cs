@@ -1,53 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-
-namespace WebChat.Web.Controllers
+﻿namespace WebChat.Web.Controllers
 {
+    using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web.Http;
     using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.Owin;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.Owin.Security;
     using Microsoft.Owin.Security.Cookies;
+
+    using WebChat.Data;
     using WebChat.Models;
-    using WebChat.Web.Models;
     using WebChat.Web.Models.Account;
 
     [Authorize]
     [RoutePrefix("api/Account")]
-    public class AccountController : ApiController
+    public class AccountController : BaseApiController
     {
-        private const string LocalLoginProvider = "Local";
         private WebChatUserManager userManager;
 
         public AccountController()
+            : base(new WebChatData())
         {
+            this.userManager = new WebChatUserManager(
+                new UserStore<WebChatUser>(new WebChatDbContext()));
         }
 
-        public AccountController(
-            WebChatUserManager userManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
+        public AccountController(IWebChatData data)
+            : base(data)
         {
-            UserManager = userManager;
-            AccessTokenFormat = accessTokenFormat;
         }
 
         public WebChatUserManager UserManager
         {
             get
             {
-                return this.userManager ?? Request.GetOwinContext().GetUserManager<WebChatUserManager>();
-            }
-
-            private set
-            {
-                this.userManager = value;
+                return this.userManager;
             }
         }
 
-        public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
+        private IAuthenticationManager Authentication
+        {
+            get
+            {
+                return Request.GetOwinContext().Authentication;
+            }
+        }
 
         // TODO: 
         // POST api/Account/Login
@@ -80,6 +78,7 @@ namespace WebChat.Web.Controllers
                 return GetErrorResult(result);
             }
 
+
             return Ok();
         }
 
@@ -94,7 +93,7 @@ namespace WebChat.Web.Controllers
 
             IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
                 model.NewPassword);
-            
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -104,19 +103,34 @@ namespace WebChat.Web.Controllers
         }
 
         // GET api/Account/UserInfo
-        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
+        [HttpGet]
         [Route("UserInfo")]
-        public UserInfoViewModel GetUserInfo()
+        public IHttpActionResult GetUserInfo()
         {
-            ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
-
-            return new UserInfoViewModel
+            if (!ModelState.IsValid)
             {
-                Email = User.Identity.GetUserName(),
-                UserName = User.Identity.Name,
-                HasRegistered = externalLogin == null,
-                LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
+                return this.BadRequest(this.ModelState);
+            }
+
+            // Validate the current user exists in the database
+            var currentUserId = User.Identity.GetUserId();
+            var currentUser = this.Data.Users.All().FirstOrDefault(x => x.Id == currentUserId);
+            if (currentUser == null)
+            {
+                return this.BadRequest("Invalid user token! Please login again!");
+            }
+
+            var userToReturn = new
+            {
+                currentUser.Id,
+                currentUser.UserName,
+                currentUser.FullName,
+                currentUser.Email,
+                currentUser.ImageDataURL
+
             };
+
+            return this.Ok(userToReturn);
         }
 
         // POST api/Account/Logout
@@ -136,88 +150,6 @@ namespace WebChat.Web.Controllers
             }
 
             base.Dispose(disposing);
-        }
-
-        private IAuthenticationManager Authentication
-        {
-            get { return Request.GetOwinContext().Authentication; }
-        }
-
-        private IHttpActionResult GetErrorResult(IdentityResult result)
-        {
-            if (result == null)
-            {
-                return InternalServerError();
-            }
-
-            if (!result.Succeeded)
-            {
-                if (result.Errors != null)
-                {
-                    foreach (string error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error);
-                    }
-                }
-
-                if (ModelState.IsValid)
-                {
-                    // No ModelState errors are available to send, so just return an empty BadRequest.
-                    return BadRequest();
-                }
-
-                return BadRequest(ModelState);
-            }
-
-            return null;
-        }
-
-        private class ExternalLoginData
-        {
-            public string LoginProvider { get; set; }
-            public string ProviderKey { get; set; }
-            public string UserName { get; set; }
-
-            public IList<Claim> GetClaims()
-            {
-                IList<Claim> claims = new List<Claim>();
-                claims.Add(new Claim(ClaimTypes.NameIdentifier, ProviderKey, null, LoginProvider));
-
-                if (UserName != null)
-                {
-                    claims.Add(new Claim(ClaimTypes.Name, UserName, null, LoginProvider));
-                }
-
-                return claims;
-            }
-
-            public static ExternalLoginData FromIdentity(ClaimsIdentity identity)
-            {
-                if (identity == null)
-                {
-                    return null;
-                }
-
-                Claim providerKeyClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
-
-                if (providerKeyClaim == null || String.IsNullOrEmpty(providerKeyClaim.Issuer)
-                    || String.IsNullOrEmpty(providerKeyClaim.Value))
-                {
-                    return null;
-                }
-
-                if (providerKeyClaim.Issuer == ClaimsIdentity.DefaultIssuer)
-                {
-                    return null;
-                }
-
-                return new ExternalLoginData
-                {
-                    LoginProvider = providerKeyClaim.Issuer,
-                    ProviderKey = providerKeyClaim.Value,
-                    UserName = identity.FindFirstValue(ClaimTypes.Name)
-                };
-            }
         }
     }
 }

@@ -17,16 +17,14 @@
     [RoutePrefix("api/Messages")]
     public class MessagesController : ApiController
     {
-        private IWebChatData data;
-
         public MessagesController()
-            : this(new WebChatData(new WebChatDbContext()))
+            :base(new WebChatData())
         {
         }
 
         public MessagesController(IWebChatData data)
+            :base(data)
         {
-            this.data = data;
         }
 
         // GET api/messages
