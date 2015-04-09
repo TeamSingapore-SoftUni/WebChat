@@ -1,4 +1,4 @@
-﻿namespace WebChat.Web.Models
+﻿namespace WebChat.Web.Models.Account
 {
    using System.ComponentModel.DataAnnotations;
 

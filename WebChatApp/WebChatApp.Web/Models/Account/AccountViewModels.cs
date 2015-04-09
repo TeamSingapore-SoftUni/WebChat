@@ -1,5 +1,6 @@
-﻿namespace WebChat.Web.Models
+﻿namespace WebChat.Web.Models.Account
 {
+    using System;
     using System.Collections.Generic;
 
     // Models returned by AccountController actions.
@@ -26,6 +27,8 @@
 
     public class UserInfoViewModel
     {
+        public Guid Id { get; set; }
+
         public string Email { get; set; }
 
         public string UserName { get; set; }

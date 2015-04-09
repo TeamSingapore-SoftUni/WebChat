@@ -13,6 +13,7 @@ namespace WebChat.Web.Controllers
     using Microsoft.Owin.Security.Cookies;
     using WebChat.Models;
     using WebChat.Web.Models;
+    using WebChat.Web.Models.Account;
 
     [Authorize]
     [RoutePrefix("api/Account")]

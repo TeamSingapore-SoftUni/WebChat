@@ -212,6 +212,8 @@
     </Compile>
     <Compile Include="Models\Account\AccountViewModels.cs" />
     <Compile Include="Models\Account\ChangePasswordBindingModel.cs" />
+    <Compile Include="Models\Chatroom\ChatroomBindingModel.cs" />
+    <Compile Include="Models\Chatroom\ChatroomViewModel.cs" />
     <Compile Include="Models\Message\SendToChatroomBindingModel.cs" />
     <Compile Include="Models\Message\SendToUserBindingModel.cs" />
     <Compile Include="Models\Account\RegisterBindingModel.cs" />
