@@ -1,9 +1,9 @@
-﻿namespace WebChat.Web.Models
+﻿namespace WebChat.Web.Models.Message
 {
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class AddNewMessageBindingModel
+    public class SendToUserBindingModel
     {
         [Required]
         [Display(Name = "Message")]
@@ -12,8 +12,5 @@
         [Required]
         [Display(Name = "ReceiverId")]
         public string ReceiverId { get; set; }
-
-        [Display(Name = "ChatroomId")]
-        public Guid ChatroomId { get; set; } 
     }
 }

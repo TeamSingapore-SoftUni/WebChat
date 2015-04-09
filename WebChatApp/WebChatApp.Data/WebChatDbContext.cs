@@ -1,6 +1,8 @@
 ﻿namespace WebChat.Data
 {
     using System.Data.Entity;
+    using System.Data.Entity.ModelConfiguration.Conventions;
+
     using Microsoft.AspNet.Identity.EntityFramework;
 
     using WebChat.Data.Migrations;
@@ -25,6 +27,7 @@
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            //modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>(); 
             base.OnModelCreating(modelBuilder);
         }
     }

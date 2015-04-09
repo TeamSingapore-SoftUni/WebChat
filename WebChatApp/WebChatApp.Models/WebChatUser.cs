@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.Security.Claims;
     using System.Threading.Tasks;
     
@@ -11,12 +12,14 @@
 
     public class WebChatUser : IdentityUser
     {
-        private ICollection<Message> messages;
+        private ICollection<Message> sentMessages;
+        private ICollection<Message> receivedMessages;
         private ICollection<Chatroom> chatrooms;
 
         public WebChatUser()
         {
-            this.messages = new HashSet<Message>();
+            this.sentMessages = new HashSet<Message>();
+            this.receivedMessages = new HashSet<Message>();
             this.chatrooms = new HashSet<Chatroom>();
         }
 
@@ -27,12 +30,19 @@
 
         public string ImageDataURL { get; set; }
      
-        public virtual ICollection<Message> Messages
+        [InverseProperty("Sender")]
+        public virtual ICollection<Message> SentMessages
         {
-            get { return this.messages; }
-            set { this.messages = value; }
+            get { return this.sentMessages; }
+            set { this.sentMessages = value; }
         }
 
+        [InverseProperty("Receiver")]
+        public virtual ICollection<Message> ReceivedMessages
+        {
+            get { return this.receivedMessages; }
+            set { this.receivedMessages = value; }
+        }
         public virtual ICollection<Chatroom> Chatrooms
         {
             get { return this.chatrooms; }

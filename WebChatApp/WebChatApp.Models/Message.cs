@@ -4,6 +4,8 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
+    using Newtonsoft.Json;
+
     public class Message
     {
         public Message()
@@ -21,12 +23,19 @@
         public DateTime DateTime { get; set; }
 
         [Required]
-        public string UserId { get; set; }
- 
-        public virtual WebChatUser User { get; set; }
+        public string SenderId { get; set; }
 
-        public Guid ChatroomId { get; set; }
+        [JsonIgnore]
+        public virtual WebChatUser Sender { get; set; }
 
+        public string ReceiverId { get; set; }
+
+        [JsonIgnore]
+        public virtual WebChatUser Receiver { get; set; }
+
+        public Guid? ChatroomId { get; set; }
+
+        [JsonIgnore]
         public virtual Chatroom Chatroom { get; set; }
     }
 }

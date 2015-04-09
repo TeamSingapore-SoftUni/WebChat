@@ -11,6 +11,7 @@
     using WebChat.Data;
     using WebChat.Models;
     using WebChat.Web.Models;
+    using WebChat.Web.Models.Message;
 
     [Authorize]
     [RoutePrefix("api/Messages")]
@@ -29,20 +30,31 @@
         }
 
         // GET api/messages
-        public IQueryable Get()
+        public IHttpActionResult Get()
         {
-            return this.data.Messages.All();
+            // TODO: Create view models for the response.
+            var currentUser =
+                this.data.Users.Find(HttpContext.Current.User.Identity.GetUserId());
+            var response = new
+                           {
+                               SentMessages = currentUser.SentMessages.Select(m => m.Id),
+                               ReceivedMessages = currentUser.ReceivedMessages.Select(m => m.Id)
+                           };
+            
+
+            return this.Ok(response);
         }
 
         // GET api/messages/5
-        public IHttpActionResult GetById(Guid id)
+        public IHttpActionResult GetByUserId(Guid id)
         {
             var messageById = this.data.Messages.All().FirstOrDefault(m => m.Id == id);
             return this.Ok(messageById);
         }
 
-        // POST api/messages
-        public IHttpActionResult PostMessage(AddNewMessageBindingModel model)
+        // POST api/messages/User
+        [Route("User")]
+        public IHttpActionResult PostMessageToUser(SendToUserBindingModel model)
         {
             if (!this.ModelState.IsValid)
             {
@@ -52,10 +64,32 @@
             var message = new Message()
             {
                 Content = model.Content,
-                //SenderId = HttpContext.Current.User.Identity.GetUserId(),
-                DateTime = DateTime.Now,
-                //ReceiverId = model.ReceiverId,
-                ChatroomId = model.ChatroomId
+                SenderId = HttpContext.Current.User.Identity.GetUserId(),
+                ReceiverId = model.ReceiverId,
+                DateTime = DateTime.Now
+            };
+
+            this.data.Messages.Add(message);
+            this.data.SaveChanges();
+
+            return this.Ok();
+        }
+
+        // POST api/messages/ToChatroom
+        [Route("Chatroom")]
+        public IHttpActionResult PostMessageToChatroom(SendToChatroomBindingModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            var message = new Message()
+            {
+                Content = model.Content,
+                SenderId = HttpContext.Current.User.Identity.GetUserId(),
+                ChatroomId = model.ChatroomId,
+                DateTime = DateTime.Now
             };
 
             this.data.Messages.Add(message);
