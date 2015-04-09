@@ -15,7 +15,7 @@
 
     [Authorize]
     [RoutePrefix("api/Messages")]
-    public class MessagesController : ApiController
+    public class MessagesController : BaseApiController
     {
         public MessagesController()
             :base(new WebChatData())
@@ -32,7 +32,7 @@
         {
             // TODO: Create view models for the response.
             var currentUser =
-                this.data.Users.Find(HttpContext.Current.User.Identity.GetUserId());
+                this.Data.Users.Find(HttpContext.Current.User.Identity.GetUserId());
             var response = new
                            {
                                SentMessages = currentUser.SentMessages.Select(m => m.Id),
@@ -46,7 +46,7 @@
         // GET api/messages/5
         public IHttpActionResult GetByUserId(Guid id)
         {
-            var messageById = this.data.Messages.All().FirstOrDefault(m => m.Id == id);
+            var messageById = this.Data.Messages.All().FirstOrDefault(m => m.Id == id);
             return this.Ok(messageById);
         }
 
@@ -67,8 +67,8 @@
                 DateTime = DateTime.Now
             };
 
-            this.data.Messages.Add(message);
-            this.data.SaveChanges();
+            this.Data.Messages.Add(message);
+            this.Data.SaveChanges();
 
             return this.Ok();
         }
@@ -90,8 +90,8 @@
                 DateTime = DateTime.Now
             };
 
-            this.data.Messages.Add(message);
-            this.data.SaveChanges();
+            this.Data.Messages.Add(message);
+            this.Data.SaveChanges();
 
             return this.Ok();
         }
