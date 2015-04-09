@@ -83,6 +83,7 @@
             return this.BadRequest();
         }
 
+        // GET api/chatroom/All
         [HttpGet]
         [Route("All")]
         public IHttpActionResult GetAllChatrooms()
@@ -91,7 +92,10 @@
                 .All()
                 .Select(c => new
                 {
+                    ChannelId = c.Id,
                     ChannelName = c.Name
+
+                    // TODO: Add count of users in channels
                 })
                 .ToList();
 
@@ -123,7 +127,7 @@
             return this.Ok(new
                 {
                     message = "Chatroom created successfully.",
-                    chatroom = new ChatroomViewModel 
+                    chatroom = new ChatroomViewModel
                     {
                         Id = chatroom.Id,
                         Name = chatroom.Name,
