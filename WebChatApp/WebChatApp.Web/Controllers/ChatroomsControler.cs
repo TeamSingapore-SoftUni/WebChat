@@ -33,7 +33,7 @@
         [Route("byName")]
         public IHttpActionResult GetChatroomByName(string name)
         {
-            var chatroom = this.data.Chatrooms.All().FirstOrDefault(c => c.Name == name);
+            var chatroom = this.Data.Chatrooms.All().FirstOrDefault(c => c.Name == name);
 
             if (chatroom != null)
             {
@@ -60,7 +60,7 @@
         public IHttpActionResult GetChatroomById(string id)
         {
             var idToGuid = new Guid(id);
-            var chatroom = this.data.Chatrooms.All().FirstOrDefault(c => c.Id == idToGuid);
+            var chatroom = this.Data.Chatrooms.All().FirstOrDefault(c => c.Id == idToGuid);
 
             if (chatroom != null)
             {
@@ -86,7 +86,7 @@
         [Route("All")]
         public IHttpActionResult GetAllChatrooms()
         {
-            var chatrooms = this.data.Chatrooms
+            var chatrooms = this.Data.Chatrooms
                 .All()
                 .Select(c => new
                 {
@@ -106,7 +106,7 @@
         {
             // get the use creating the chatroom
             var userId = HttpContext.Current.User.Identity.GetUserId();
-            var user = this.data.Users.Find(userId);
+            var user = this.Data.Users.Find(userId);
 
             if (!this.ModelState.IsValid)
             {
@@ -119,8 +119,8 @@
             };
 
             chatroom.Users.Add(user);
-            this.data.Chatrooms.Add(chatroom);
-            this.data.SaveChanges();
+            this.Data.Chatrooms.Add(chatroom);
+            this.Data.SaveChanges();
 
             return this.Ok(new
                 {
@@ -133,9 +133,7 @@
                 });
         }
 
-        
-
-        // PUT api/values/5
+         // PUT api/values/5
         public void Put(int id, [FromBody]string value)
         {
         }
