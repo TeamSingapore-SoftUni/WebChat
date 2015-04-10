@@ -28,6 +28,7 @@
         }
 
         // GET api/messages
+        [HttpGet]
         public IHttpActionResult Get()
         {
             // TODO: Create view models for the response.

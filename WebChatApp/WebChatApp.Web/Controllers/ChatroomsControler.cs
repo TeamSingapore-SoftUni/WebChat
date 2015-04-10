@@ -30,9 +30,55 @@
             this.data = data;
         }
 
+        // POST api/Chatrooms
+        [HttpPost]
+        [ActionName("create")]
+        public IHttpActionResult CreateChatroom(ChatroomBindingModel model)
+        {
+            // get the user creating the chatroom
+            //var userId = HttpContext.Current.User.Identity.GetUserId();
+            //var user = this.data.Users.Find(userId);
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
+            var isChatroomAlreadyExisting = this.data.Chatrooms.All().FirstOrDefault(c => c.Name == model.Name);
+            if (isChatroomAlreadyExisting != null)
+            {
+                return this.BadRequest("Chatroom with the same name already exists");
+            }
+
+            var chatroom = new Chatroom
+            {
+                Name = model.Name
+            };
+
+            //chatroom.Users.Add(user);
+            this.data.Chatrooms.Add(chatroom);
+            this.data.SaveChanges();
+
+            return this.Ok(
+                new
+                {
+                    message = "Chatroom created successfully.",
+                    chatroom = new ChatroomViewModel
+                    {
+                        Id = chatroom.Id,
+                        Name = chatroom.Name
+                    }
+                });
+        }
+
+        // PUT api/values/5
+        public void Put(int id, [FromBody]string value)
+        {
+        }
+
         // get api/chatroom/GetByName?name={name}
         [HttpGet]
-        [Route("GetByName")]
+        [ActionName("GetByName")]
         public IHttpActionResult GetChatroomByName(string name)
         {
             var chatroom = this.data.Chatrooms.All().FirstOrDefault(c => c.Name == name);
@@ -53,12 +99,12 @@
                 });
             }
 
-            return this.BadRequest();
+            return this.NotFound();
         }
 
         // GET api/chatroom/GetById?id={id}
         [HttpGet]
-        [Route("GetById")]
+        [ActionName("GetById")]
         public IHttpActionResult GetChatroomById(string id)
         {
             var idToGuid = new Guid(id);
@@ -80,86 +126,71 @@
                 });
             }
 
-            return this.BadRequest();
+            return this.NotFound();
         }
 
         // GET api/chatroom/GetAll
         [HttpGet]
-        [Route("GetAll")]
+        [ActionName("GetAll")]
         public IHttpActionResult GetAllChatrooms()
         {
             var chatrooms = this.data.Chatrooms
                 .All()
                 .Select(c => new
-                {
-                    ChannelId = c.Id,
-                    ChannelName = c.Name,
-                    UsersCount = c.Users.Count()
-                })
+                    {
+                        ChannelId = c.Id,
+                        ChannelName = c.Name,
+                        UsersCount = c.Users.Count()
+                    })
                 .ToList();
 
             return this.Ok(chatrooms);
         }
 
-        // POST api/Chatrooms
-        [HttpPost]
-        public IHttpActionResult CreateChatroom(ChatroomBindingModel model)
+        [HttpGet]
+        [ActionName("GetCount")]
+        public IHttpActionResult GetChatroomsCount()
         {
-            // get the user creating the chatroom
-            //var userId = HttpContext.Current.User.Identity.GetUserId();
-            //var user = this.data.Users.Find(userId);
+            var chatroomsCount = this.data.Chatrooms.All().Count();
 
-            if (!this.ModelState.IsValid)
-            {
-                return this.BadRequest(this.ModelState);
-            }
-
-            var chatroom = new Chatroom
-            {
-                Name = model.Name
-            };
-
-            //chatroom.Users.Add(user);
-            this.data.Chatrooms.Add(chatroom);
-            this.data.SaveChanges();
-
-            return this.Ok(new
-            {
-                message = "Chatroom created successfully.",
-                chatroom = new ChatroomViewModel
-                {
-                    Id = chatroom.Id,
-                    Name = chatroom.Name
-                }
-            });
+            return this.Ok(chatroomsCount);
         }
 
-
-
-        // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
+        // TODO: for some reason the metod fails to serialize the data when there are users, to be resolved
+        [HttpGet]
+        [ActionName("GetUsersByChatroom")]
+        public IHttpActionResult GetUsersByChatroomName(string name)
         {
+            var usersList = this.data.Chatrooms
+                .All()
+                .Where(c => c.Name == name)
+                .Select(u => new { u.Users })
+                .ToList();
+
+            return this.Ok(usersList);
         }
 
         // DELETE api/Chatroom/DelById?id={id}
-        [Route("DelById")]
         [HttpDelete]
+        [ActionName("DelById")]
         public IHttpActionResult DeleteById(string id)
         {
-            var chatroomForDeletion = this.data.Chatrooms.All().FirstOrDefault(c => c.Id.ToString() == id);
+            var chatroomForDeletion = this.data.Chatrooms
+                .All()
+                .FirstOrDefault(c => c.Id.ToString() == id);
             if (chatroomForDeletion != null)
             {
                 this.data.Chatrooms.Delete(chatroomForDeletion);
                 this.data.SaveChanges();
-                return this.Ok();
+                return this.Ok("Chatroom deleted");
             }
 
-            return this.BadRequest();
+            return this.NotFound();
         }
 
         // DELETE api/Chatroom/DelByName?name={name}
-        [Route("DelByName")]
         [HttpDelete]
+        [ActionName("DelByName")]
         public IHttpActionResult DeleteByName(string name)
         {
             var chatroomForDeletion = this.data.Chatrooms.All().FirstOrDefault(c => c.Name == name);
@@ -167,10 +198,36 @@
             {
                 this.data.Chatrooms.Delete(chatroomForDeletion);
                 this.data.SaveChanges();
-                return this.Ok();
+                return this.Ok("Chatroom deleted");
             }
 
-            return this.BadRequest();
+            return this.NotFound();
+        }
+
+        [HttpPost]
+        [ActionName("Join")]
+        public IHttpActionResult JoinChatroom(string name)
+        {
+            var chatroom = this.data.Chatrooms
+                .All()
+                .FirstOrDefault(c => c.Name == name);
+
+            if (chatroom == null)
+            {
+                return this.NotFound();
+            }
+
+            var currentUserId = HttpContext.Current.User.Identity.GetUserId();
+            var user = this.data.Users.Find(currentUserId);
+
+            if (user == null || chatroom.Users.Contains(user))
+            {
+                return this.BadRequest();
+            }
+
+            chatroom.Users.Add(user);
+            this.data.SaveChanges();
+            return this.Ok();
         }
     }
 }

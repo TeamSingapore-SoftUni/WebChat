@@ -27,8 +27,8 @@
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        [Display(Name = "ImageDataURL")]
+        [Display(Name = "ImageDataUrl")]
         [RegularExpression("^data:image/.*$", ErrorMessage = "The image data should be valid Data URL, e.g. data:image/jpeg;base64,iVBORw0KGgo...")]
-        public string ImageDataURL { get; set; }
+        public string ImageDataUrl { get; set; }
     }
 }

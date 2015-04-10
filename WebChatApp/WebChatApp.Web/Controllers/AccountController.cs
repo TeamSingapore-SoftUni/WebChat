@@ -68,7 +68,7 @@
                 UserName = model.UserName,
                 Email = model.Email,
                 FullName = model.FullName,
-                ImageDataURL = model.ImageDataURL
+                ImageDataUrl = model.ImageDataUrl
             };
 
             IdentityResult result = await this.UserManager.CreateAsync(user, model.Password);
@@ -127,7 +127,7 @@
                         currentUser.UserName,
                         currentUser.FullName,
                         currentUser.Email,
-                        currentUser.ImageDataURL
+                        ImageDataURL = currentUser.ImageDataUrl
                     };
 
             return this.Ok(userToReturn);

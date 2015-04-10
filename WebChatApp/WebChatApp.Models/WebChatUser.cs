@@ -1,6 +1,5 @@
 ﻿namespace WebChat.Models
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -14,13 +13,15 @@
     {
         private ICollection<Message> sentMessages;
         private ICollection<Message> receivedMessages;
-        private ICollection<Chatroom> chatrooms;
+        private ICollection<Chatroom> joinedChatrooms;
+        //private ICollection<Chatroom> createdChatrooms;
 
         public WebChatUser()
         {
             this.sentMessages = new HashSet<Message>();
             this.receivedMessages = new HashSet<Message>();
-            this.chatrooms = new HashSet<Chatroom>();
+            this.joinedChatrooms = new HashSet<Chatroom>();
+            //this.createdChatrooms = new HashSet<Chatroom>();
         }
 
         [Required]
@@ -28,7 +29,7 @@
         [MinLength(2)]
         public string FullName { get; set; }
 
-        public string ImageDataURL { get; set; }
+        public string ImageDataUrl { get; set; }
      
         [InverseProperty("Sender")]
         public virtual ICollection<Message> SentMessages
@@ -44,11 +45,17 @@
             set { this.receivedMessages = value; }
         }
 
-        public virtual ICollection<Chatroom> Chatrooms
+        public virtual ICollection<Chatroom> JoinedChatrooms
         {
-            get { return this.chatrooms; }
-            set { this.chatrooms = value; }
+            get { return this.joinedChatrooms; }
+            set { this.joinedChatrooms = value; }
         }
+
+        //public virtual ICollection<Chatroom> CreatedChatrooms
+        //{
+        //    get { return this.createdChatrooms; }
+        //    set { this.createdChatrooms = value; }
+        //}
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<WebChatUser> manager, string authenticationType)
         {

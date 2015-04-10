@@ -1,6 +1,5 @@
 ﻿namespace WebChat.Web.Models.Chatroom
 {
-    using System;
     using System.ComponentModel.DataAnnotations;
 
     public class ChatroomBindingModel
