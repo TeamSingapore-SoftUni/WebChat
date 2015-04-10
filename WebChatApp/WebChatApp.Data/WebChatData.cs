@@ -13,10 +13,10 @@
         private IDictionary<Type, object> repositories;
 
         public WebChatData()
-            :this(new WebChatDbContext())
+            : this(new WebChatDbContext())
         {
-            
         }
+
         public WebChatData(DbContext context)
         {
             this.context = context;
@@ -48,7 +48,7 @@
             var typeOfRepository = typeof(T);
             if (!this.repositories.ContainsKey(typeOfRepository))
             {
-                var newRepository = Activator.CreateInstance(typeof(GenericRepository<T>), context);
+                var newRepository = Activator.CreateInstance(typeof(GenericRepository<T>), this.context);
                 this.repositories.Add(typeOfRepository, newRepository);
             }
 

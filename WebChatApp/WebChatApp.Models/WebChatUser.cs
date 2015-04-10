@@ -43,6 +43,7 @@
             get { return this.receivedMessages; }
             set { this.receivedMessages = value; }
         }
+
         public virtual ICollection<Chatroom> Chatrooms
         {
             get { return this.chatrooms; }

@@ -16,9 +16,9 @@
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<WebChatDbContext, Configuration>());
         }
 
-        public IDbSet<Message> Messges { get; set; }
+        public IDbSet<Message> Messages { get; set; }
 
-        public IDbSet<Chatroom> Chatroom { get; set; }
+        public IDbSet<Chatroom> Chatrooms { get; set; }
 
         public static WebChatDbContext Create()
         {

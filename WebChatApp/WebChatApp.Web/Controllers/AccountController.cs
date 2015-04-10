@@ -60,7 +60,7 @@
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
             var user = new WebChatUser()
@@ -71,15 +71,15 @@
                 ImageDataURL = model.ImageDataURL
             };
 
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+            IdentityResult result = await this.UserManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
             {
-                return GetErrorResult(result);
+                return this.GetErrorResult(result);
             }
 
 
-            return Ok();
+            return this.Ok();
         }
 
         // POST api/Account/ChangePassword
@@ -88,18 +88,18 @@
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return this.BadRequest(this.ModelState);
             }
 
-            IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
-                model.NewPassword);
+            IdentityResult result =
+                await this.UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
 
             if (!result.Succeeded)
             {
-                return GetErrorResult(result);
+                return this.GetErrorResult(result);
             }
 
-            return Ok();
+            return this.Ok();
         }
 
         // GET api/Account/UserInfo
@@ -120,15 +120,15 @@
                 return this.BadRequest("Invalid user token! Please login again!");
             }
 
-            var userToReturn = new
-            {
-                currentUser.Id,
-                currentUser.UserName,
-                currentUser.FullName,
-                currentUser.Email,
-                currentUser.ImageDataURL
-
-            };
+            var userToReturn =
+                new
+                    {
+                        currentUser.Id,
+                        currentUser.UserName,
+                        currentUser.FullName,
+                        currentUser.Email,
+                        currentUser.ImageDataURL
+                    };
 
             return this.Ok(userToReturn);
         }

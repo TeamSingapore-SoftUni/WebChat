@@ -18,12 +18,12 @@
     public class MessagesController : BaseApiController
     {
         public MessagesController()
-            :base(new WebChatData())
+            : base(new WebChatData())
         {
         }
 
         public MessagesController(IWebChatData data)
-            :base(data)
+            : base(data)
         {
         }
 

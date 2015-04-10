@@ -30,9 +30,9 @@
             this.data = data;
         }
 
-        // get api/chatroom/byName?name={name}
+        // get api/chatroom/GetByName?name={name}
         [HttpGet]
-        [Route("byName")]
+        [Route("GetByName")]
         public IHttpActionResult GetChatroomByName(string name)
         {
             var chatroom = this.data.Chatrooms.All().FirstOrDefault(c => c.Name == name);
@@ -56,9 +56,9 @@
             return this.BadRequest();
         }
 
-        // GET api/chatroom/byId?id={id}
+        // GET api/chatroom/GetById?id={id}
         [HttpGet]
-        [Route("byId")]
+        [Route("GetById")]
         public IHttpActionResult GetChatroomById(string id)
         {
             var idToGuid = new Guid(id);
@@ -83,19 +83,19 @@
             return this.BadRequest();
         }
 
-        // GET api/chatroom/All
+        // GET api/chatroom/GetAll
         [HttpGet]
-        [Route("All")]
+        [Route("GetAll")]
         public IHttpActionResult GetAllChatrooms()
         {
+            var test = this.data.Chatrooms.All().ToList();
             var chatrooms = this.data.Chatrooms
                 .All()
                 .Select(c => new
                 {
                     ChannelId = c.Id,
-                    ChannelName = c.Name
-
-                    // TODO: Add count of users in channels
+                    ChannelName = c.Name,
+                    UsersCount = c.Users.Count()
                 })
                 .ToList();
 
@@ -106,9 +106,9 @@
         [HttpPost]
         public IHttpActionResult CreateChatroom(ChatroomBindingModel model)
         {
-            // get the use creating the chatroom
-            var userId = HttpContext.Current.User.Identity.GetUserId();
-            var user = this.data.Users.Find(userId);
+            // get the user creating the chatroom
+            //var userId = HttpContext.Current.User.Identity.GetUserId();
+            //var user = this.data.Users.Find(userId);
 
             if (!this.ModelState.IsValid)
             {
@@ -120,7 +120,7 @@
                 Name = model.Name
             };
 
-            chatroom.Users.Add(user);
+            //chatroom.Users.Add(user);
             this.data.Chatrooms.Add(chatroom);
             this.data.SaveChanges();
 
@@ -130,7 +130,7 @@
                 chatroom = new ChatroomViewModel
                 {
                     Id = chatroom.Id,
-                    Name = chatroom.Name,
+                    Name = chatroom.Name
                 }
             });
         }
@@ -142,9 +142,36 @@
         {
         }
 
-        // DELETE api/values/5
-        public void Delete(int id)
+        // DELETE api/Chatroom/DelById?id={id}
+        [Route("DelById")]
+        [HttpDelete]
+        public IHttpActionResult DeleteById(string id)
         {
+            var chatroomForDeletion = this.data.Chatrooms.All().FirstOrDefault(c => c.Id.ToString() == id);
+            if (chatroomForDeletion != null)
+            {
+                this.data.Chatrooms.Delete(chatroomForDeletion);
+                this.data.SaveChanges();
+                return this.Ok();
+            }
+
+            return this.BadRequest();
+        }
+
+        // DELETE api/Chatroom/DelByName?name={name}
+        [Route("DelByName")]
+        [HttpDelete]
+        public IHttpActionResult DeleteByName(string name)
+        {
+            var chatroomForDeletion = this.data.Chatrooms.All().FirstOrDefault(c => c.Name == name);
+            if (chatroomForDeletion != null)
+            {
+                this.data.Chatrooms.Delete(chatroomForDeletion);
+                this.data.SaveChanges();
+                return this.Ok();
+            }
+
+            return this.BadRequest();
         }
     }
 }
