@@ -88,7 +88,6 @@
         [Route("GetAll")]
         public IHttpActionResult GetAllChatrooms()
         {
-            var test = this.data.Chatrooms.All().ToList();
             var chatrooms = this.data.Chatrooms
                 .All()
                 .Select(c => new
