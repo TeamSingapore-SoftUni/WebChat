@@ -1,0 +1,107 @@
+		<!DOCTYPE html>
+		<html ng-app="webchatApp">
+		<head>
+			<meta charset="utf-8">
+			<title>WebChat</title>
+			<!-- Load Bootsrap and custom styles-->
+			<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+			<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+			<link rel="stylesheet" type="text/css" href="css/webchatApp.css">
+			<!-- Load jQuery and BootstrapJS-->
+			<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+			<!-- Load AngularJS, modules, servieces and controllers -->
+			<script src="lib/angular/angular.js"></script>
+			<script src="lib/angular/angular-resource.js"></script>
+			<script src="lib/angular/angular-route.js"></script>
+			<script src="lib/angular/angular-sanitize.js"></script>
+			<script src="lib/angular/ui-bootstrap-tpls-0.12.0.js"></script>
+			<script src="lib/angular/ui-bootstrap-custom-0.12.0.js"></script>
+			<script src="lib/angular/ui-bootstrap-custom-tpls-0.12.0.js"></script>
+			<script src="lib/angular/dirPagination.js"></script>
+			<script src="js/webchatApp.js"></script>
+			<script src="js/services/authorizationService.js"></script>
+			<script src="js/services/authenticationService.js"></script>
+			<script src="js/services/errorsSerivce.js"></script>
+
+			<script src="js/controllers/homeController.js"></script>
+			<script src="js/controllers/registerController.js"></script>
+			<script src="js/controllers/loginController.js"></script>
+			<script src="js/controllers/mainController.js"></script>
+		</head>
+		<body ng-controller="MainController">
+			<!-- navigation-->
+			<div class="navbar navbar-default header-nav">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" ng-click="loadHomePage()"><strong class="home-page-button">WebChat</strong></a>
+				</div>
+				<div class="navbar-collapse collapse navbar-responsive-collapse">
+					<ul class="nav navbar-nav pull-right">
+						<li >
+							<a  href="#" class="pull-right" ng-if="userHasLogged" ng-click="logout()">Logout</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!--main-->
+			<div class="container row" >
+				<div class="jumbotron">
+					<h1 class="text-center">WebChatApp</h1>
+					<p class="aligned-text">Welcome to our WebChatApp where you could chat with friends and colleagues using any web-browser of your choise.Why using all these lame and slow chat applications like Skype,Viber,IRC(?) and so on, when you could be chatting up your homies from here. You can create your own chatrooms where users can join, you can have private chat with users.Just search for a specific user or channel in your profile.Have fun!</p>
+					<!-- login -->
+					<form name="loginForm" class="centered-div" id="login-form">
+						<fieldset >
+							<div class="form-group display-inline-div">
+								<label for="username">Username: </label>
+								<input type="text" name="username" class="form-control" id="username" placeholder="Username" ng-model="credentials.username" required>				
+							</div>
+							<div class="form-group display-inline-div">
+								<label for="password" >Password: </label>		
+								<input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="credentials.password"  required>				
+							</div>
+							<!-- login submit-->
+							<div class="form-group display-inline-div">								
+								<button name="login" ng-click="login(credentials, loginForm)" type="submit" class="btn btn-primary">Go chat</button>
+							</div>
+						</fieldset>
+					</form>
+					<p class="text-center text-danger">Don't have an accouunt yet?Go ahead and register one for free!</p>
+					<!-- register -->
+					<form name="registerForm" class="centered-div" id="registeration-form">
+						<fieldset>
+							<legend class="text-center">Registration</legend>
+							<div class="form-group">
+								<label for="email">Email: </label>
+								<input type="email" name="email" class="form-control" id="email" placeholder="Email" ng-model="credentials.email" required>				
+							</div>
+							<div class="form-group">
+								<label for="username">Username: </label>
+								<input type="text" name="username" class="form-control" id="username" placeholder="Username" ng-model="credentials.username" required>				
+							</div>
+							<div class="form-group">
+								<label for="fullName">Full Name: </label>
+								<input type="text" name="fullName" class="form-control" id="fullName" placeholder="Full name" ng-model="credentials.fullName" required>				
+							</div>
+							<div class="form-group ">
+								<label for="password" >Password: </label>		
+								<input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="credentials.password"  required>				
+							</div>
+							<div class="form-group">
+								<label for="confirmPassword" >Confirm password: </label>		
+								<input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" ng-model="credentials.confirmPassword" required>
+							</div>
+							<!-- register submit-->
+							<div class="form-group centered-button">								
+								<button name="register" ng-click="register(credentials, registerForm)" type="submit" class="btn btn-success btn-lg">Register</button>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+		</body>
+		</html>

@@ -79,7 +79,10 @@
             }
 
 
-            return this.Ok();
+            return this.Ok(new 
+            {
+                message = "Registration successfull."
+            });
         }
 
         // POST api/Account/ChangePassword

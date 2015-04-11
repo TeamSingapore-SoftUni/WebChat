@@ -1,0 +1,62 @@
+body, div, article, aside, header, nav, ul, li, a, p, span, strong, em, footer, section, h1, h2, h3, h4 {
+    margin:0;
+    padding:0;
+}
+
+
+.container{
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.jumbotron{
+  width: 75%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.text-center{
+	text-align: centerd;
+}
+
+.aligned-text{
+	text-align: justify;
+}
+
+.display-inline-div{
+	display: inline-block;
+}
+
+.centered-div {
+  width: 80% 
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+#registeration-form{
+	width: 50%;
+	margin-right: auto;
+  	margin-left: auto;
+  	padding: 15px;
+	border: 1px solid #2c3e50;
+	border-radius: 1%;
+}
+
+.centered-button {
+  width: 35%; 
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0px;
+}
+
+#login-form{
+  padding-left: 120px;
+}
+
