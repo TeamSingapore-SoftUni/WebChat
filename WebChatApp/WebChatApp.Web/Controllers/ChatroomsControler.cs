@@ -1,7 +1,6 @@
 ﻿namespace WebChat.Web.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Web;
     using System.Web.Http;
@@ -10,7 +9,6 @@
 
     using WebChat.Data;
     using WebChat.Models;
-    using WebChat.Web.Models;
     using WebChat.Web.Models.Account;
     using WebChat.Web.Models.Chatroom;
 
@@ -32,7 +30,7 @@
 
         // POST api/Chatrooms
         [HttpPost]
-        [ActionName("create")]
+        [ActionName("Create")]
         public IHttpActionResult CreateChatroom(ChatroomBindingModel model)
         {
             // get the user creating the chatroom
@@ -72,9 +70,9 @@
         }
 
         // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
+        //public void Put(int id, [FromBody]string value)
+        //{
+        //}
 
         // get api/chatroom/GetByName?name={name}
         [HttpGet]
@@ -156,6 +154,7 @@
             return this.Ok(chatroomsCount);
         }
 
+        // GET /api/Chatroom/GetUsersByChatroom?name={name}
         [HttpGet]
         [ActionName("GetUsersByChatroom")]
         public IHttpActionResult GetUsersByChatroomName(string name)
@@ -214,15 +213,16 @@
             return this.NotFound();
         }
 
+        // POST api/Chatroom/Join?name={name}
         [HttpPost]
         [ActionName("Join")]
         public IHttpActionResult JoinChatroom(string name)
         {
-            var chatroom = this.data.Chatrooms
+            var chatroomForJoining = this.data.Chatrooms
                 .All()
                 .FirstOrDefault(c => c.Name == name);
 
-            if (chatroom == null)
+            if (chatroomForJoining == null)
             {
                 return this.NotFound();
             }
@@ -230,12 +230,39 @@
             var currentUserId = HttpContext.Current.User.Identity.GetUserId();
             var user = this.data.Users.Find(currentUserId);
 
-            if (user == null || chatroom.Users.Contains(user))
+            if (user == null || chatroomForJoining.Users.Contains(user))
             {
                 return this.BadRequest();
             }
 
-            chatroom.Users.Add(user);
+            chatroomForJoining.Users.Add(user);
+            this.data.SaveChanges();
+            return this.Ok();
+        }
+
+        // POST api/Chatroom/Leave?name={name}
+        [HttpPost]
+        [ActionName("Leave")]
+        public IHttpActionResult LeaveChatroom(string name)
+        {
+            var chatroomForLeaving = this.data.Chatrooms
+                .All()
+                .FirstOrDefault(c => c.Name == name);
+
+            if (chatroomForLeaving == null)
+            {
+                return this.NotFound();
+            }
+
+            var currentUserId = HttpContext.Current.User.Identity.GetUserId();
+            var user = this.data.Users.Find(currentUserId);
+
+            if (user == null || !chatroomForLeaving.Users.Contains(user))
+            {
+                return this.BadRequest();
+            }
+
+            chatroomForLeaving.Users.Remove(user);
             this.data.SaveChanges();
             return this.Ok();
         }
