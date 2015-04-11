@@ -1,0 +1,29 @@
+<!-- login form-->
+<form name="loginForm" class="row form-horizontal col-md-8 col-sm-8 col-xs-11  well
+well-sm col-centered login-register-forms">
+<fieldset>
+  <legend class="text-center">Login</legend>
+  <div class="form-group">
+    <label for="username" class="col-md-3 col-sm-3 col-xs-3 control-label">Username: </label>
+    <div class="col-md-6 col-sm-6 col-xs-6">
+      <input type="text" name="username" class="form-control" id="username" placeholder="Username" ng-model="credentials.username" required>
+    </div>
+    <div class="pull-right text-danger col-md-3 col-sm-3 col-xs-3" ng-show="loginForm.username.$error.required && loginForm.username.$dirty">Required!</div>
+  </div>
+  <div class="form-group">
+    <label for="password" class="col-md-3 col-sm-3 col-xs-3 control-label">Password: </label>
+    <div class="col-md-6 col-sm-6 col-xs-6">
+      <input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="credentials.password"  required>
+    </div>
+    <div class="pull-right text-danger col-lg-3" ng-show="loginForm.password.$error.required && loginForm.password.$dirty"> Required!</div>
+  </div>
+  <!-- login submit-->
+  <div class="form-group">
+    <div class="centerd-buttons">
+      <a class="btn btn-default" href="#/home">Cancel</a>
+      <button name="login" ng-click="login(credentials, loginForm)" type="submit" class="btn btn-primary" ng-disabled="loginForm.username.$error.required ||
+      loginForm.password.$error.required">Login</button>
+    </div>
+  </div>
+</fieldset>
+</form>
