@@ -5,8 +5,8 @@ webchatApp.factory('authorizationService', function authorizationService($window
     function setUserSession(data) {
         userSession = {
             accessToken: data.access_token,
-            userName: data.username,
-        }
+            userName: data.username
+        };
 
         $window.sessionStorage["currentUser"] = JSON.stringify(userSession);
     }
@@ -67,6 +67,6 @@ webchatApp.factory('authorizationService', function authorizationService($window
         getUsername: getUsername,
         getAccessToken: getAccessToken,
         getAuthorizationHeaders: getAuthorizationHeaders,
-        deleteAuthorizationHeaders: deleteAuthorizationHeaders,
+        deleteAuthorizationHeaders: deleteAuthorizationHeaders
     };
 });

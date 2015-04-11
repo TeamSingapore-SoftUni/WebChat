@@ -2,7 +2,7 @@
 var webchatAppControllers = webchatAppControllers || angular.module('webchatAppControllers', []);
 
 webchatApp.controller('HomeController',
-    function homeController($scope, $rootScope, $http,  errorsService) {
+    function homeController($scope, $rootScope, $http) {
         // $scope.loading = true;
         // $scope.noAdsToDisplay = false;
 

@@ -6,7 +6,7 @@ webchatApp.factory('authenticationService',
             $http({
                 method: method,
                 url: url,
-                data: data,
+                data: data
             })
                 .success(function(data, status, headers, config) {
                     deferred.resolve(data, status, headers, config);
@@ -19,7 +19,7 @@ webchatApp.factory('authenticationService',
         }
 
         var login = function(data) {
-            return authenticateRequester('POST', baseUrl + 'Account/login', "userName=" + data.username + 
+            return authenticateRequester('POST', baseUrl + 'Account/login', "Username=" + data.username +
                 "&password=" + data.password +  "&grant_type=password");
         };
 

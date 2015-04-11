@@ -5,7 +5,7 @@ var webchatApp = angular.module('webchatApp', [
     'ngRoute',
     'ui.bootstrap',
     'angularUtils.directives.dirPagination',
-    'webchatAppControllers',
+    'webchatAppControllers'
 ]);
 
 /* Configure routing and URL paths */
@@ -31,14 +31,14 @@ webchatApp.config(['$routeProvider',
             redirectTo: '/'
         });
     }
-]).
-run(function($rootScope, $location, authorizationService) {
-    $rootScope.$on('$routeChangeStart', function(event, next) {
-        var path = $location.path();
-        if (!authorizationService.userIsLogged() && path !== '/login' && path !== '/register' && path !== '/home') {
-            $location.path('/unauthorized');
-        };
-    });
-}).
-constant('baseUrl', 'http://localhost:5789/api/')
+])
+    .run(function($rootScope, $location, authorizationService) {
+        $rootScope.$on('$routeChangeStart', function(event, next) {
+            var path = $location.path();
+            if (!authorizationService.userIsLogged() && path !== '/login' && path !== '/register' && path !== '/home') {
+                $location.path('/unauthorized');
+            }
+        });
+    })
+    .constant('baseUrl', 'http://localhost:5789/api/')
     .constant('ajaxErrorText', 'Something went wrong, please try again or refresh the page.');

@@ -14,7 +14,7 @@ webchatApp.controller('RegisterController',
                 authenticationService.register(credentials).then(function(data) {
                     authorizationService.setUserSession(data);
                     $rootScope.$broadcast('alertMessage', 'User account created.Please login');
-                    $location.path('/login');
+                    //$location.path('/account/register');
                 }, function(error) {
                     errorMessage = error.modelState;
                     errorsService.handleRegisterError(errorMessage);

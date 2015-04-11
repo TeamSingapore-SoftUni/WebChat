@@ -5,14 +5,18 @@ webchatApp.controller('MainController',
     function mainController($scope, $rootScope, $window, $location, $timeout, authorizationService, authenticationService) {
         // login
         $scope.login = function(credentials, loginForm) {
-            authenticationService.login(credentials).then(function(data) {
-                authorizationService.setUserSession(data);
-                /* set an eventHandler on rootScope for user logging */
-                $rootScope.$broadcast('userHasLogged');
-            }, function(error) {
-                $scope.errorOccurred = true;
-                errorsService.handleLogingError(error);
-            });
+            if (loginForm.$valid) {
+                authenticationService.login(credentials).then(function(data) {
+                    authorizationService.setUserSession(data);
+                    /* set an eventHandler on rootScope for user logging */
+                    $rootScope.$broadcast('userHasLogged');
+                    console.log("User logged");
+                }, function(error) {
+                    $scope.errorOccurred = true;
+                    //errorsService.handleLogingError(error);
+                });
+            }
+
         };
 
         // register
@@ -24,8 +28,8 @@ webchatApp.controller('MainController',
                     $rootScope.$broadcast('alertMessage', 'User account created.Please login');
                    // $location.path('/login');
                 }, function(error) {
-                    errorMessage = error.modelState;
-                    errorsService.handleRegisterError(errorMessage);
+                    var errorMessage = error.modelState;
+                    //errorsService.handleRegisterError(errorMessage);
                 });
             }
         };
