@@ -63,7 +63,7 @@
                 new
                 {
                     message = "Chatroom created successfully.",
-                    chatroom = new ChatroomViewModel
+                    chatroom = new ChatroomShortViewModel
                     {
                         Id = chatroom.Id,
                         Name = chatroom.Name
@@ -156,18 +156,28 @@
             return this.Ok(chatroomsCount);
         }
 
-        // TODO: for some reason the metod fails to serialize the data when there are users, to be resolved
         [HttpGet]
         [ActionName("GetUsersByChatroom")]
         public IHttpActionResult GetUsersByChatroomName(string name)
         {
-            var usersList = this.data.Chatrooms
-                .All()
-                .Where(c => c.Name == name)
-                .Select(u => new { u.Users })
-                .ToList();
+            var chatroom = this.data.Chatrooms.All().FirstOrDefault(c => c.Name == name);
+            if (chatroom != null)
+            {
+                var usersList = 
+                    new ChatroomShortViewModel
+                        {
+                            Id = chatroom.Id,
+                            Name = chatroom.Name,
+                            Users =
+                                chatroom.Users.Select(
+                                    u => new UserInfoShortViewModel { UserName = u.UserName })
+                                .ToList()
+                        };
 
-            return this.Ok(usersList);
+                return this.Ok(usersList);
+            }
+
+            return this.NotFound();
         }
 
         // DELETE api/Chatroom/DelById?id={id}

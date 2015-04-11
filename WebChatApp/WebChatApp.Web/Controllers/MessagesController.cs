@@ -34,11 +34,12 @@
             // TODO: Create view models for the response.
             var currentUser =
                 this.Data.Users.Find(HttpContext.Current.User.Identity.GetUserId());
-            var response = new
-                           {
-                               SentMessages = currentUser.SentMessages.Select(m => m.Id),
-                               ReceivedMessages = currentUser.ReceivedMessages.Select(m => m.Id)
-                           };
+            var response = 
+                new
+                {
+                    SentMessages = currentUser.SentMessages.Select(m => m.Id),
+                    ReceivedMessages = currentUser.ReceivedMessages.Select(m => m.Id)
+                };
             
 
             return this.Ok(response);
