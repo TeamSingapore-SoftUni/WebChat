@@ -1,0 +1,52 @@
+<div class="jumbotron">
+	<h1 class="text-center">WebChatApp</h1>
+	<p class="aligned-text">Welcome to our WebChatApp where you could chat with friends and colleagues using any web-browser of your choise.Why using all these lame and slow chat applications like Skype,Viber,IRC(?) and so on, when you could be chatting up your homies from here. You can create your own chatrooms where users can join, you can have private chat with users.Just search for a specific user or channel in your profile.Have fun!</p>
+	<!-- login -->
+	<form name="loginForm" class="centered-div" id="login-form">
+		<fieldset >
+			<div class="form-group display-inline-div">
+				<label for="username">Username: </label>
+				<input type="text" name="username" class="form-control" id="username" placeholder="Username" ng-model="credentials.username" required>				
+			</div>
+			<div class="form-group display-inline-div">
+				<label for="password" >Password: </label>		
+				<input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="credentials.password"  required>				
+			</div>
+			<!-- login submit-->
+			<div class="form-group display-inline-div">								
+				<button name="login" ng-click="login(credentials, loginForm)" type="submit" class="btn btn-primary">Go chat</button>
+			</div>
+		</fieldset>
+	</form>
+	<p class="text-center text-danger">Don't have an accouunt yet?Go ahead and register one for free!</p>
+	<!-- register -->
+	<form name="registerForm" class="centered-div" id="registeration-form">
+		<fieldset>
+			<legend class="text-center">Registration</legend>
+			<div class="form-group">
+				<label for="email">Email: </label>
+				<input type="email" name="email" class="form-control" id="email" placeholder="Email" ng-model="credentials.email" required>				
+			</div>
+			<div class="form-group">
+				<label for="username">Username: </label>
+				<input type="text" name="username" class="form-control" id="username" placeholder="Username" ng-model="credentials.username" required>				
+			</div>
+			<div class="form-group">
+				<label for="fullName">Full Name: </label>
+				<input type="text" name="fullName" class="form-control" id="fullName" placeholder="Full name" ng-model="credentials.fullName" required>				
+			</div>
+			<div class="form-group ">
+				<label for="password" >Password: </label>		
+				<input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="credentials.password"  required>				
+			</div>
+			<div class="form-group">
+				<label for="confirmPassword" >Confirm password: </label>		
+				<input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" ng-model="credentials.confirmPassword" required>
+			</div>
+			<!-- register submit-->
+			<div class="form-group centered-button">								
+				<button name="register" ng-click="register(credentials, registerForm)" type="submit" class="btn btn-success btn-lg">Register</button>
+			</div>
+		</fieldset>
+	</form>
+</div>

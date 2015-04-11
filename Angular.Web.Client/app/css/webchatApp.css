@@ -60,3 +60,21 @@ body, div, article, aside, header, nav, ul, li, a, p, span, strong, em, footer, 
   padding-left: 120px;
 }
 
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
+/* alert messages*/
+.alerts-div {
+	position: fixed;
+	height: 60px;
+	top: 0%;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	font-size: 15px;
+}
+
+

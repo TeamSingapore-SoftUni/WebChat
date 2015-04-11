@@ -5,7 +5,7 @@ webchatApp.factory('authorizationService', function authorizationService($window
     function setUserSession(data) {
         userSession = {
             accessToken: data.access_token,
-            userName: data.username
+            userName: data.userName
         };
 
         $window.sessionStorage["currentUser"] = JSON.stringify(userSession);

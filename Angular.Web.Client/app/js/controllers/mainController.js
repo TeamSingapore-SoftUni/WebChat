@@ -2,7 +2,7 @@
 var webchatAppControllers = webchatAppControllers || angular.module('webchatAppControllers', []);
 
 webchatApp.controller('MainController',
-    function mainController($scope, $rootScope, $window, $location, $timeout, authorizationService, authenticationService) {
+    function mainController($scope, $rootScope, $window, $location, $timeout, authorizationService, authenticationService, errorsService) {
         // login
         $scope.login = function(credentials, loginForm) {
             if (loginForm.$valid) {
@@ -10,15 +10,14 @@ webchatApp.controller('MainController',
                     authorizationService.setUserSession(data);
                     /* set an eventHandler on rootScope for user logging */
                     $rootScope.$broadcast('userHasLogged');
-                    console.log("User logged");
+                    $location.path("/home");
                 }, function(error) {
                     $scope.errorOccurred = true;
-                    //errorsService.handleLogingError(error);
+                    errorsService.handleLogingError(error);
                 });
             }
 
         };
-
         // register
         $scope.register = function(credentials, registerForm) {
             if (registerForm.$valid) {
@@ -26,12 +25,10 @@ webchatApp.controller('MainController',
                 authenticationService.register(credentials).then(function(data) {
                     authorizationService.setUserSession(data);
                     $rootScope.$broadcast('alertMessage', 'User account created.Please login');
-                   // $location.path('/login');
                 }, function(error) {
-                    var errorMessage = error.modelState;
-                    //errorsService.handleRegisterError(errorMessage);
+                    var errorMessage = error.ModelState;
+                    errorsService.handleRegisterError(errorMessage);
                 });
             }
         };
-
     });

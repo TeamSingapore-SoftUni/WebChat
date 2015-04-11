@@ -1,98 +1,12 @@
-<!-- loading ads gif-->
-<div class="row" ng-if="loading">
-  <div class="spinner" >
-    <img src="./img/ajax_loader_blue_512.gif" alt="" class="spinner-gif">
-  </div>
-</div>
-<!--All ads list-->
+
 <div class="row">
-  <div class="col-md-8 col-sm-8 col-xs-10">
-    <!-- no ads to display-->
-    <div class="col-centered" ng-if="noAdsToDisplay">
-      <h4 class="black-text text-center">No ads were founnd.</h4>
-    </div>
-    <ul class="all-ads-list">
-      <li dir-paginate="ad in adsData.ads | filter: query | itemsPerPage: adsPerPage" total-items="totalAds"  class="well ad-container-well" data-id="{{ad.id}}">
-        <!--header -->
-        <div class="row">
-          <div class="col-md-8 col-sm-8 col-xs-12">
-            <h3 class="ad-title">{{ad.title}}</h3>
-          </div>
-          <div class="col-md-4 col-sm-4 col-xs-12 pull-right">
-            <span class="text-info pull-right ad-date-container"> {{ad.date | date:"EEE dd-MMM-yyyy"}} </span>
-          </div>
-        </div>
-        <!-- info -->
-        <div class="row">
-          <div class="col-md-4 col-sm-4 col-xs-8 ad-image-container">
-            <img src="./img/No_image_available.svg" ng-src="{{ad.imageDataUrl}}" alt="" class="ad-image img-responsive">
-          </div>
-          <div class="col-md-8 col-sm-8 col-xs-12">
-            <p class="well well-sm ad-info-paragraph"> {{ad.text}} </p>
-            <div class="row">
-              <div class="col-md-3 col-sm-4 col-xs-3 ad-contact-info-titles"> <strong>Name: </strong> </div>
-              <div class="col-md-8 col-sm-7 col-xs-8 well well-sm ad-contact-info">{{ad.ownerName}}</div>
-            </div>
-            <div class="row">
-              <div class="col-md-3 col-sm-4 col-xs-3 ad-contact-info-titles"> <strong>Email: </strong>  </div>
-              <div class="col-md-8 col-sm-7 col-xs-8 well well-sm ad-contact-info">
-                <a href="mailto:{{ad.ownerEmail}}">{{ad.ownerEmail}}</a>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-3 col-sm-4 col-xs-3 ad-info-text ad-contact-info-titles"> <strong>Tel: </strong></div>
-              <div class="col-md-8 col-sm-7 col-xs-8 well well-sm ad-contact-info">{{ad.ownerPhone}} </div>
-            </div>
-          </div>
-        </div>
-      </li>
-    </ul>
-  </div>
-  <!--Filters by category and town-->
-  <div class="col-md-3 col-sm-3 col-xs-10 filter-menues">
-    <input type="text" class="form-control" id="inputQuery" placeholder="Search" ng-model="query">
-    <h3 class="black-text">Filter by: </h3>
-    <div class="btn-group dropdown-filter">
-      <button class="btn btn-primary btn-lg dropdown-toggle dropdown-filte-button" type="button" data-toggle="dropdown" aria-expanded="false"> {{categoryFilter}}
-      <span class="caret"></span> </button>
-      <ul class="dropdown-menu" role="menu">
-        <li><a ng-click="filterByCategory('', 'Category')">All</a></li>
-        <li ng-repeat="category in categoriesData">
-          <a ng-click="filterByCategory(category.id, category.name)" class="filte-items-link">
-          {{category.name}}</a>
-        </li>
-      </ul>
-    </div>
-    <div class="btn-group dropdown-filter">
-      <button class="btn btn-primary btn-lg dropdown-toggle dropdown-filte-button" type="button" data-toggle="dropdown" aria-expanded="false" }> {{townFilter}}
-      <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu" >
-        <li><a ng-click="filterByTown('', 'Town')">All</a></li>
-        <li ng-repeat="town in townsData">
-          <a ng-click="filterByTown(town.id, town.name)" class="filte-items-link" > {{town.name}}</a>
-        </li>
-      </ul>
-    </div>
-    <!--Ads per page -->
-    <h3 class="black-text regular-font-size">Ads per page: </h3>
-    <div class="btn-group dropdown-filter">
-      <button class="btn btn-primary btn-lg dropdown-toggle dropdown-filte-button" type="button" data-toggle="dropdown" aria-expanded="false" }> {{adsPerPage}}
-      <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu" >
-        <li >
-          <a ng-click="filterByCount(3)" class="filte-items-link">3</a>
-          <a ng-click="filterByCount(5)" class="filte-items-link">5</a>
-          <a ng-click="filterByCount(10)" class="filte-items-link">10</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
-<!--paginaton-->
-<div class="row pagination-div">
-  <div class='col-md-9 col-sm-10 col-xs-12 col-centered'>
-    <dir-pagination-controls boundary-links="true" on-page-change="pageChanged(newPageNumber)" template-url="templates/dirPagination.tpl.html"></dir-pagination-controls>
-  </div>
+	<div class="col-md-3 cols-sm-3">
+		Left-side-bar
+	</div>
+	<div class="col-md-6 cols-sm-6">
+		Main bar with chat messages
+	</div>
+	<div class="col-md-3 cols-sm-3">
+		right-side-bar
+	</div>
 </div>
