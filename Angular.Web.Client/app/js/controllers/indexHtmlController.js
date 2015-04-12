@@ -44,7 +44,7 @@ webchatApp.controller('IndexHtmlController',
 				$scope.currentUser = authorizationService.getUsername();
 				$location.path('/home')
 			}
-        };
+        }
 
         init();
 
