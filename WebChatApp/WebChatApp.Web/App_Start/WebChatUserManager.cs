@@ -18,13 +18,15 @@
         public static WebChatUserManager Create(IdentityFactoryOptions<WebChatUserManager> options, IOwinContext context)
         {
             var manager = new WebChatUserManager(new UserStore<WebChatUser>(context.Get<WebChatDbContext>()));
-            // Configure validation logic for usernames
+
+            // Validation logic for usernames
             manager.UserValidator = new UserValidator<WebChatUser>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
             };
-            // Configure validation logic for passwords
+
+            // Validation logic for passwords
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
@@ -36,8 +38,10 @@
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
-                manager.UserTokenProvider = new DataProtectorTokenProvider<WebChatUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+                manager.UserTokenProvider = 
+                    new DataProtectorTokenProvider<WebChatUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
+
             return manager;
         }
     }

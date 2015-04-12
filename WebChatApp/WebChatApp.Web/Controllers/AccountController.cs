@@ -81,7 +81,7 @@
 
             return this.Ok(new 
             {
-                message = "Registration successfull."
+                message = "Registration successful."
             });
         }
 
