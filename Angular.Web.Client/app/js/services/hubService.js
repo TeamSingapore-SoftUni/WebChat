@@ -1,13 +1,19 @@
-webchatApp.factory('hubService',['$rootScope','Hub', '$timeout', 
-    function($rootScope, Hub, $timeout){
+webchatApp.factory('hubService',['$rootScope','Hub', '$timeout', '$filter', 
+    function($rootScope, Hub, $timeout, $filter){
 
     //declaring the hub connection
-    var hub = new Hub('chathub', {
+    var hub = new Hub('messageHub', {
 
         //client side methods
         listeners:{
-            'broadcastMessage': function (name, message) {
-                console.log(name, message);
+            'broadcastMessage': function (name, message, dateTime) {
+                var dateTimeFormatter = $filter('date')(new Date(dateTime), 'dd-MMM /  HH:mm:ss');
+                $('#chatbox').append(
+                    '<div>['+ 
+                    dateTimeFormatter + 
+                    '] <strong>' + name + '</strong>: ' + 
+                    message + 
+                    '</div>');
                 $rootScope.$apply();
             }
         },
@@ -48,7 +54,6 @@ webchatApp.factory('hubService',['$rootScope','Hub', '$timeout',
     });
 
     var send = function (name, message) {
-        console.log(hub);
         hub.Send(name, message); //Calling a server method
     };
 

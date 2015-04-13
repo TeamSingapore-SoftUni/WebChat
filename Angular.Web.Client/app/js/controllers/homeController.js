@@ -12,8 +12,8 @@ webchatApp.controller('HomeController',
         // Save message to database and push notification to SignalR.
         $scope.sendMessage = function(message) {
             if (message !== '') {
-                //messageService.sendToChatroom(message);
-                hubService.sendMessage("noname", message);
+                messageService.sendToChatroom(message);
+                //hubService.sendMessage("noname", message);
             }
         };
 

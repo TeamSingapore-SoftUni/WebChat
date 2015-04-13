@@ -1,8 +1,8 @@
-﻿namespace WebChat.Web
+﻿namespace WebChat.Web.Hubs
 {
     using Microsoft.AspNet.SignalR;
 
-    public class ChatHub : Hub
+    public class MessageHub : Hub
     {
         public void Send(string name, string message)
         {

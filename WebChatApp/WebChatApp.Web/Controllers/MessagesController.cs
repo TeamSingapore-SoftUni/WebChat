@@ -8,14 +8,18 @@
 
     using Microsoft.AspNet.Identity;
 
+    using WebApiAungularWithPushNoti.Controllers;
+
     using WebChat.Data;
     using WebChat.Models;
-    using WebChat.Web.Models;
     using WebChat.Web.Models.Message;
+
+    using WebChat.Web.Hubs;
 
     [Authorize]
     [RoutePrefix("api/Messages")]
-    public class MessagesController : BaseApiController
+
+    public class MessagesController : ApiControllerWithHub<MessageHub>
     {
         public MessagesController()
             : base(new WebChatData())
@@ -114,6 +118,8 @@
 
             this.Data.Messages.Add(message);
             this.Data.SaveChanges();
+            this.Hub.Clients.All.broadcastMessage(HttpContext.Current.User.Identity.GetUserName(), message.Content, message.DateTime);
+
 
             return this.Ok();
         }
