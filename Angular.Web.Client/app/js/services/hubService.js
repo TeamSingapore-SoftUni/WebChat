@@ -7,13 +7,16 @@ webchatApp.factory('hubService',['$rootScope','Hub', '$timeout', '$filter',
         //client side methods
         listeners:{
             'broadcastMessage': function (name, message, dateTime) {
-                var dateTimeFormatter = $filter('date')(new Date(dateTime), 'dd-MMM /  HH:mm:ss');
-                $('#chatbox').append(
-                    '<div>['+ 
-                    dateTimeFormatter + 
+                var formatedDateTime = $filter('date')(new Date(dateTime), 'dd-MMM /  HH:mm:ss');
+                var messagesboxElement = $('#messagesbox');
+                var messageElement = 
+                    $('<div>[' + 
+                    formatedDateTime + 
                     '] <strong>' + name + '</strong>: ' + 
                     message + 
-                    '</div>');
+                    '</div>').addClass('message');
+                messagesboxElement.append(messageElement);
+                messagesboxElement.scrollTop(messagesboxElement.prop('scrollHeight'));
                 $rootScope.$apply();
             }
         },

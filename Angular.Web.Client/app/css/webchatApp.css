@@ -130,19 +130,27 @@ body {
 /* chatbox */
 #chatbox {
   width:100%;
+}
+
+#chatbox #messagesbox {
+  overflow-y: scroll;
   height: 300px;
 }
 
-#chatbox #messagebox {
-  position: absolute;
-  bottom: 5px;
+#chatbox #messagesbox{
+  padding-bottom: 10px;
+}
+
+#chatbox #input-messagebox {
+  position: relative;
   width:100%;
 }
 
-#chatbox #messagebox > input[type="text"] {
+#chatbox #input-messagebox > input[type="text"] {
   width: 90%;
 }
 
-#chatbox #messagebox > input[type="submit"] {
+#chatbox #input-messagebox > input[type="submit"] {
   width: 9%;
+  float: right;
 }

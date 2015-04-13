@@ -13,7 +13,6 @@ webchatApp.controller('HomeController',
         $scope.sendMessage = function(message) {
             if (message !== '') {
                 messageService.sendToChatroom(message);
-                //hubService.sendMessage("noname", message);
             }
         };
 
@@ -24,8 +23,8 @@ webchatApp.controller('HomeController',
             });
         }
 
-        
-        // $scope.loading = true;
-        // $scope.noAdsToDisplay = false;
-
+        $scope.$on('messagesRendered', function(messagesRenderedEvent) {
+            var messagesbox = document.getElementById('messagesbox');
+            messagesbox.scrollTop = messagesbox.scrollHeight;
+        });
     });
