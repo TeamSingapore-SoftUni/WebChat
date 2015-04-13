@@ -14,16 +14,17 @@
 
     [Authorize]
     [RoutePrefix("api/Chatroom")]
-    public class ChatroomController : ApiController
+    public class ChatroomController : BaseApiController
     {
         private IWebChatData data;
 
         public ChatroomController()
-            : this(new WebChatData(new WebChatDbContext()))
+            : this(new WebChatData())
         {
         }
 
         public ChatroomController(IWebChatData data)
+            : base(data)
         {
             this.data = data;
         }
