@@ -3,6 +3,14 @@ body, div, article, aside, header, nav, ul, li, a, p, span, strong, em, footer, 
     padding:0;
 }
 
+/*html {
+  min-height:100%;
+  position:relative
+}
+
+body {
+  height:100%;
+}*/
 
 .container{
   width: 90%;
@@ -75,6 +83,47 @@ body, div, article, aside, header, nav, ul, li, a, p, span, strong, em, footer, 
 	right: 0;
 	margin: auto;
 	font-size: 15px;
+}
+
+#left-side-bar {
+  height: 100%;
+  border-right: 3px solid black;
+}
+
+#right-side-bar {
+  height: 100%;
+  border-left: 3px solid black;
+}
+
+#main-board{
+    height: 100%;
+}
+/*
+#home-page-cotainer{
+  margin-top: 80px;
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    overflow:hidden;
+}
+*/
+
+.user-info {
+  
+}
+
+.list-no-style {
+  list-style-type: none;
+}
+
+.user-image-container {
+  height: auto;
+}
+
+.user-image {
+  width: 100%;
 }
 
 
