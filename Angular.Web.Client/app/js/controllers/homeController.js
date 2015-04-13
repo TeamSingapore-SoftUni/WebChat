@@ -13,6 +13,7 @@ webchatApp.controller('HomeController',
         $scope.sendMessage = function(message) {
             if (message !== '') {
                 messageService.sendToChatroom(message);
+                clearInputField();
             }
         };
 
@@ -27,4 +28,9 @@ webchatApp.controller('HomeController',
             var messagesbox = document.getElementById('messagesbox');
             messagesbox.scrollTop = messagesbox.scrollHeight;
         });
+
+        function clearInputField() {
+            var inputField = document.getElementById('input-messagebox').firstElementChild;
+            inputField.value = '';
+        }
     });

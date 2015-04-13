@@ -13,7 +13,7 @@
 				on-finish-render-messages>[{{message.DateTime | date: 'dd-MMM /  HH:mm:ss'}}] <strong>{{message.SenderName}}</strong>: {{message.Content}} </div>
 			</div>
 			<div id="input-messagebox">
-				<input type="text" ng-model="myMessage" placeholder="Enter your message here..." />
+				<input type="text" ng-model="myMessage" placeholder="Enter your message here..." ng-enter="sendMessage(myMessage)" />
 				<input ng-click="sendMessage(myMessage)" type="submit" value="Send" />
 			</div>
 		</div>
