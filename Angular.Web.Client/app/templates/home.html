@@ -4,7 +4,23 @@
 		Left-side-bar
 	</div>
 	<div class="col-md-6 cols-sm-6">
-		Main bar with chat messages
+		<!-- Masovski is working on this
+		Main bar with chat messages -->
+
+		<div class="container">
+        <input type="text" id="message" />
+        <input type="button" id="sendmessage" value="Send" />
+        <input type="hidden" id="displayname" />
+        <ul id="discussion"></ul>
+    </div>
+    <!--Add script to update the page and send messages.-->
+		<div id="chatbox" ng-init="listMessagesInChatroom()">
+			<div ng-repeat="message in chat">[{{message.DateTime | date: 'dd-MMM /  HH:mm:ss'}}] <strong>{{message.SenderName}}</strong>: {{message.Content}} </div>
+			<div id="messagebox">
+				<input type="text" ng-model="myMessage" placeholder="Enter your message here..." />
+				<input ng-click="sendMessage(myMessage)" type="submit" value="Send" />
+			</div>
+		</div>
 	</div>
 	<div class="col-md-3 cols-sm-3">
 		right-side-bar
