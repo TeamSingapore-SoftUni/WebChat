@@ -75,7 +75,27 @@
             return this.Ok();
         }
 
-        // POST api/messages/ToChatroom
+        // GET api/messages/Chatroom
+        [Route("Chatroom")]
+        [HttpGet]
+        public IHttpActionResult GetMessagesByChatroom(Guid chatroomId)
+        {
+            var messages = this.Data.Messages
+                .All()
+                .Where(m => m.ChatroomId == chatroomId)
+                .OrderBy(m => m.DateTime)
+                .Select(m => new
+                             {
+                                 m.Id,
+                                 m.Content,
+                                 SenderName = m.Sender.UserName,
+                                 m.DateTime
+                             });
+
+            return this.Ok(messages);
+        }
+
+        // POST api/messages/Chatroom
         [Route("Chatroom")]
         public IHttpActionResult PostMessageToChatroom(SendToChatroomBindingModel model)
         {

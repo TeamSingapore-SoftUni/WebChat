@@ -127,3 +127,22 @@ body {
 }
 
 
+/* chatbox */
+#chatbox {
+  width:100%;
+  height: 300px;
+}
+
+#chatbox #messagebox {
+  position: absolute;
+  bottom: 5px;
+  width:100%;
+}
+
+#chatbox #messagebox > input[type="text"] {
+  width: 90%;
+}
+
+#chatbox #messagebox > input[type="submit"] {
+  width: 9%;
+}

@@ -5,7 +5,8 @@ var webchatApp = angular.module('webchatApp', [
 	'ngRoute',
 	'ui.bootstrap',
 	'angularUtils.directives.dirPagination',
-	'webchatAppControllers'
+	'webchatAppControllers',
+	'SignalR'
 	]);
 
 /* Configure routing and URL paths */
