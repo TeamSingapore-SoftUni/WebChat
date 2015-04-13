@@ -52,6 +52,6 @@ webchatApp.factory('authenticationService',
         return {
             login: login,
             register: register,
-            logout: logout
+            logout: logout,
         };
     });
