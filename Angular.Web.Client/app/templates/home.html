@@ -6,7 +6,7 @@
 	<div class="col-md-6 cols-sm-6" id="main-board">
 		<!-- Masovski is working on this
 		Main bar with chat messages -->
-<!--Add script to update the page and send messages.-->
+		<!--Add script to update the page and send messages.-->
 		<div id="chatbox" ng-init="listMessagesInChatroom()">
 			<div id="messagesbox">
 				<div class="message" ng-repeat="message in chat" 
@@ -20,18 +20,45 @@
 	</div>
 
 	<div class="col-md-3 cols-sm-3" id="right-side-bar">
+		<!-- user info -->
 		<div class="row user-info">
-			<div class="col-md-8">
+			<div class="col-md-11">
 				<h3 class="text-success">Profile</h3>
 				<ul class="list-no-style">
 					<li> <b> Username:</b> {{ userInfo.UserName}}</li>
 					<li> <b> Full name: </b>{{ userInfo.FullName}}</li>
 					<li> <b> Email: <b> {{ userInfo.Email}}</li>
 				</ul>
-	</div>
-			<div class="col-md-4 user-image-container">
-				<img src="./img/No_image_available.svg" alt="" class="user-image img-responsive">
 			</div>
+		</div>
+		<!-- create chatroom -->
+		<form class="row"  id="create-chatroom">
+			<p class="text-info">Create a chatroom: </p>
+			<div class="form-group display-inline-div">
+				<input type="text" class="form-control" placeholder="Chatroom name" ng-model="newChatroomName" >
+			</div>
+			<div class="form-group display-inline-div">
+				<button type="submit" class="btn btn-info" ng-click="createChatroom(newChatroomName)" >Create</button>
+			</div>
+		</form>
+		<!-- serach chatroom -->
+		<form class="row" role="search" id="search-channel">
+			<p class="text-success">Search for a chatroom: </p>
+			<div class="form-group display-inline-div">
+				<input type="text" class="form-control" placeholder="Chatroom" ng-model="chatroomName" >
+			</div>
+			<div class="form-group display-inline-div">
+				<button type="submit" class="btn btn-success" ng-click="searchChatroom(chatroomName)" >Search</button>
+			</div>
+		</form>
+		<!-- join chatroom -->
+		<div class="row" id="found-chatroom">
+			<ul>
+				<li class="display-inline-div list-no-style found-chatroom-li text-success" 
+				ng-if="searchChatroomClicked"> {{ foundChannel.Name }}</li>
+				<a class="btn btn-success display-inline-div"
+				ng-if="chatroomFound" ng-click="joinChatroom(foundChannel.Name)">Join</a>
+			</ul>
 		</div>
 	</div>
 </div>

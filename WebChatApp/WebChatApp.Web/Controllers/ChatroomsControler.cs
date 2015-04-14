@@ -35,8 +35,8 @@
         public IHttpActionResult CreateChatroom(ChatroomBindingModel model)
         {
             // get the user creating the chatroom
-            //var userId = HttpContext.Current.User.Identity.GetUserId();
-            //var user = this.data.Users.Find(userId);
+            var userId = HttpContext.Current.User.Identity.GetUserId();
+            var user = this.data.Users.Find(userId);
 
             if (!this.ModelState.IsValid)
             {
@@ -54,7 +54,7 @@
                 Name = model.Name
             };
 
-            //chatroom.Users.Add(user);
+            chatroom.Users.Add(user);
             this.data.Chatrooms.Add(chatroom);
             this.data.SaveChanges();
 
@@ -233,7 +233,7 @@
 
             if (user == null || chatroomForJoining.Users.Contains(user))
             {
-                return this.BadRequest();
+                return this.BadRequest("You've already joined this chatroom.");
             }
 
             chatroomForJoining.Users.Add(user);
