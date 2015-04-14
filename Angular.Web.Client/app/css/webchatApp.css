@@ -13,7 +13,7 @@ body {
 }*/
 
 .container{
-  width: 90%;
+  width: 95%;
   margin-right: auto;
   margin-left: auto;
   padding-left: 15px;
@@ -73,6 +73,10 @@ body {
     margin: 0 auto;
 }
 
+.pull-left{
+  text-align: left;
+}
+
 /* alert messages*/
 .alerts-div {
 	position: fixed;
@@ -86,13 +90,14 @@ body {
 }
 
 #left-side-bar {
-  height: 100%;
-  border-right: 3px solid black;
+  padding-left; 0px !important;
+  height: 500px;
+  border-right: 3px solid #95a5a6;
 }
 
 #right-side-bar {
-  height: 100%;
-  border-left: 3px solid black;
+  height: 500px;
+  border-left: 3px solid #95a5a6;
 }
 
 #main-board{
@@ -126,7 +131,6 @@ body {
   width: 100%;
 }
 
-
 /* chatbox */
 #chatbox {
   width:100%;
@@ -134,7 +138,7 @@ body {
 
 #chatbox #messagesbox {
   overflow-y: scroll;
-  height: 300px;
+  height: 500px;
 } 
 
 #chatbox #messagesbox{
@@ -155,17 +159,7 @@ body {
   float: right;
 }
 
-#search-channel {
-  margin-top: 10px;
-  padding-left: 10px;
-}
-
-#create-chatroom {
-  margin-top: 10px;
-  padding-left: 10px;
-}
-
-#found-chatroom {
+.search-create-right-side-divs {
   margin-top: 10px;
   padding-left: 10px;
 }

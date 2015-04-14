@@ -20,12 +20,17 @@ webchatApp.factory('userService', function($http, $q, baseUrl, authorizationServ
     }
 
     var getUserInfo = function() {
-        return userRequester('GET', baseUrl + '/Account/UserInfo', null);
+        return userRequester('GET', baseUrl + 'Account/UserInfo', null);
+    };
+
+    var getUserByName = function(searchUserName) {
+        return userRequester('GET', baseUrl + 'Users/GetByName?userName=' + searchUserName , null);
     };
 
 
     return {
         getUserInfo: getUserInfo,
+        getUserByName: getUserByName,
 
     };
 });
