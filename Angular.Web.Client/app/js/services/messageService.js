@@ -23,7 +23,7 @@ webchatApp.factory('messageService',
 
         var sendToChatroom = function(message) {
             return messageRequester('POST', baseUrl + 'Messages/Chatroom', "Content=" + message +
-                "&ChatroomId=602B4EB0-88DC-4B1B-87AA-05575A0B4DB4");
+                "&ChatroomId=ba18a49e-605c-4781-8a3e-597a79d8068b");
         };
 
 

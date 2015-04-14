@@ -24,7 +24,11 @@ webchatApp.controller('MainController',
                 credentials.ImageDataURL = null;
                 authenticationService.register(credentials).then(function(data) {
                     authorizationService.setUserSession(data);
-                    $rootScope.$broadcast('alertMessage', 'User account created.Please login');
+                    var message = {};
+                    message.Text = 'User account created.Please login';
+                    message.Type = 'success';
+
+                    $rootScope.$broadcast('alertMessage', message);
                 }, function(error) {
                     var errorMessage = error.ModelState;
                     errorsService.handleRegisterError(errorMessage);

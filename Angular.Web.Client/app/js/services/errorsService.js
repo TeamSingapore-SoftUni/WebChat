@@ -1,40 +1,56 @@
 /* Serrvice for handling error  */
 webchatApp.factory('errorsService', function errorsService($rootScope, ajaxErrorText, baseUrl) {
-	function handleError(error) {
-		if (error.message.indexOf('The image size should be less than ') > -1) {
-			$rootScope.$broadcast('alertMessage', 'Image size too big! The image size should be less than' + imageSize + '!');
-		} else if (error.message.indexOf('Authorization has been denied') > -1) {
-			$rootScope.$broadcast('alertMessage', 'You are not authorized to perform this type of request!');
-		} else if (error.message.indexOf('You Can not delete category with advertisements') > -1) {
-			$rootScope.$broadcast('alertMessage', error.message);
-		} else if (error.message.indexOf('You can not delete a town that is used by users!') > -1) {
-			$rootScope.$broadcast('alertMessage', error.message);
-		} else {
-			$rootScope.$broadcast('alertMessage', ajaxErrorText);
-		}
-	};
+    function handleError(error) {
+    	var message = {};       
+        message.Type = 'danger';
 
-	function handleLogingError(error) {
-		if (error.error_description) {
-			$rootScope.$broadcast('alertMessage', error.error_description);
-		} else {
-			$rootScope.$broadcast('alertMessage', ajaxErrorText);
-		}
-	};
+        if (error.Message.indexOf('You\'ve already joined this chatroom.') > -1) {
+        	message.Text = 'You\'ve already joined this chatroom.';
+            $rootScope.$broadcast('alertMessage', message);
+        } else if (error.Message.indexOf('Authorization has been denied') > -1) {
+        	message.Text = 'You are not authorized to perform this type of request!';
+            $rootScope.$broadcast('alertMessage', message);
+        } else if (error.Message.indexOf('Chatroom with the same name already exists') > -1) {
+        	message.Text = error.Message;
+            $rootScope.$broadcast('alertMessage', message);
+        } else {
+        	message.Text = ajaxErrorText;
+            $rootScope.$broadcast('alertMessage', message);
+        }
+    };
 
-	function handleRegisterError(errorMessage) {
-		if (errorMessage['']) {
-			$rootScope.$broadcast('alertMessage', errorMessage[''][0]);
-		} else if (errorMessage['model.ConfirmPassword']) {
-			$rootScope.$broadcast('alertMessage', errorMessage['model.ConfirmPassword'][0]);
-		} else {
-			$rootScope.$broadcast('alertMessage', ajaxErrorText);
-		}
-	};
+    function handleLogingError(error) {
+    	var message = {};       
+        message.Type = 'danger';
 
-	return {
-		handleError: handleError,
-		handleLogingError: handleLogingError,
-		handleRegisterError: handleRegisterError,
-	};
+        if (error.error_description) {
+        	message.Text = error.error_description;
+            $rootScope.$broadcast('alertMessage', message);
+        } else {
+        	message.Text = ajaxErrorText;
+            $rootScope.$broadcast('alertMessage', message);
+        }
+    };
+
+    function handleRegisterError(errorMessage) {
+        var message = {};       
+        message.Type = 'danger';
+
+        if (errorMessage['']) {
+        	message.Text = errorMessage[''][0];
+            $rootScope.$broadcast('alertMessage', message);
+        } else if (errorMessage['model.ConfirmPassword']) {
+        	message.Text = errorMessage['model.ConfirmPassword'][0];
+            $rootScope.$broadcast('alertMessage', message);
+        } else {
+        	message.Text = ajaxErrorText;
+            $rootScope.$broadcast('alertMessage', message);
+        }
+    };
+
+    return {
+        handleError: handleError,
+        handleLogingError: handleLogingError,
+        handleRegisterError: handleRegisterError,
+    };
 });

@@ -19,8 +19,8 @@ webchatApp.controller('IndexHtmlController',
 		/* This event is sent by all controllers after success/error ajax callback */
 		$scope.$on('alertMessage', function(event, message) {
 			$scope.alertDialog = true;
-			$scope.alertMsg = message;
-			$scope.alertType = 'danger';
+			$scope.alertMsg = message.Text;
+			$scope.alertType = message.Type;
 			$('.alerts-div').css('z-index', 99);
 
 			/* autohide alert message */
@@ -59,7 +59,7 @@ webchatApp.controller('IndexHtmlController',
 			/* alert user */
 			$scope.alertDialog = true;
 			$scope.alertMsg = 'Goodbye ' + $scope.currentUser + '.Thank you for using our services!';
-			$scope.alertType = 'danger';
+			$scope.alertType = 'success';
 			$('.alerts-div').css('z-index', 99);
 
 			/* autohide alert message */
