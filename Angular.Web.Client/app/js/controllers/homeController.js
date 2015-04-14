@@ -22,7 +22,7 @@ webchatApp.controller('HomeController',
             .then(function (data) {
                 $scope.chat = data;
             });
-        }
+        };
 
         $scope.$on('messagesRendered', function(messagesRenderedEvent) {
             var messagesbox = document.getElementById('messagesbox');

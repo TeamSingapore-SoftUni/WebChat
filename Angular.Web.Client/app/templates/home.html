@@ -1,37 +1,13 @@
 
 <div class="row" id="home-page-cotainer">
-	<div class="col-md-3 cols-sm-3" id="left-side-bar">
-		left-side-bar
-	</div>
-	<div class="col-md-6 cols-sm-6" id="main-board">
-		<!-- Masovski is working on this
-		Main bar with chat messages -->
-<!--Add script to update the page and send messages.-->
-		<div id="chatbox" ng-init="listMessagesInChatroom()">
-			<div id="messagesbox">
-				<div class="message" ng-repeat="message in chat" 
-				on-finish-render-messages>[{{message.DateTime | date: 'dd-MMM /  HH:mm:ss'}}] <strong>{{message.SenderName}}</strong>: {{message.Content}} </div>
-			</div>
-			<div id="input-messagebox">
-				<input type="text" ng-model="myMessage" placeholder="Enter your message here..." ng-enter="sendMessage(myMessage)" />
-				<input ng-click="sendMessage(myMessage)" type="submit" value="Send" />
-			</div>
-		</div>
-	</div>
+	<left-sidebar>
 
-	<div class="col-md-3 cols-sm-3" id="right-side-bar">
-		<div class="row user-info">
-			<div class="col-md-8">
-				<h3 class="text-success">Profile</h3>
-				<ul class="list-no-style">
-					<li> <b> Username:</b> {{ userInfo.UserName}}</li>
-					<li> <b> Full name: </b>{{ userInfo.FullName}}</li>
-					<li> <b> Email: <b> {{ userInfo.Email}}</li>
-				</ul>
-	</div>
-			<div class="col-md-4 user-image-container">
-				<img src="./img/No_image_available.svg" alt="" class="user-image img-responsive">
-			</div>
-		</div>
-	</div>
+	</left-sidebar>
+	<main-board>
+
+	</main-board>
+	<right-sidebar>
+
+	</right-sidebar>
+	
 </div>

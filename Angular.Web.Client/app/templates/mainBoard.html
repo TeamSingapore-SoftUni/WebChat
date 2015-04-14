@@ -1,0 +1,15 @@
+<div class="col-md-6 cols-sm-6" id="main-board">
+    <!-- Masovski is working on this
+    Main bar with chat messages -->
+    <!--Add script to update the page and send messages.-->
+    <div id="chatbox" ng-init="listMessagesInChatroom()">
+        <div id="messagesbox">
+            <div class="message" ng-repeat="message in chat"
+                 on-finish-render-messages>[{{message.DateTime | date: 'dd-MMM /  HH:mm:ss'}}] <strong>{{message.SenderName}}</strong>: {{message.Content}} </div>
+        </div>
+        <div id="input-messagebox">
+            <input type="text" ng-model="myMessage" placeholder="Enter your message here..." ng-enter="sendMessage(myMessage)" />
+            <input ng-click="sendMessage(myMessage)" type="submit" value="Send" />
+        </div>
+    </div>
+</div>
