@@ -4,7 +4,7 @@
 		<h3 class="pull-left pannel-headings">Chatrooms</h3>
 		<div class="list-group col-md-11 cols-sm-11 col-lg-11" >
 			<a class="list-group-item chatroom-link" ng-repeat="chatroom in userChatrooms" id="{{chatroom.Id}}" 
-			ng-click="loadChatroom(chatroom.Id, chatroom.Name)">{{ chatroom.Name }}</a>
+			ng-click="loadChatroom(chatroom.Id, chatroom.Name)" ng-class="getClass(chatroom.Id)">{{ chatroom.Name }}</a>
 		</div>		
 	</div>	
 	<div class="row text-danger" ng-if="noChatroomsToDisplay">No chatrooms yet.</div>

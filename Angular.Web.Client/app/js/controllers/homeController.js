@@ -36,11 +36,14 @@ webchatApp.controller('HomeController',
             errorsService.handleError(error);
         });
 
-        // load clicked chatroom
+        // load clicked chatroom and list all users in it 
         $scope.loadChatroom = function(chatroomId, chatroomName) {
             $location.path("/home/chatroom/" + chatroomId);
             $scope.currentChatroomName = chatroomName;
         };
+
+        //get users in chatoom
+       // getUsersInChatroom();
 
         // create a chatoom
         $scope.createChatroom = function(chatroomName) {
@@ -207,4 +210,32 @@ webchatApp.controller('HomeController',
                 $scope.currentChatroomName = "Default chatoom."
             }
         }
+
+        // function getUsersInChatroom() {
+        //     var currentChatroomName = $scope.currentChatroomName;
+        //     if (currentChatroomName !== "Default chatoom.") {
+        //         chatroomService.getUsersInChatroom(currentChatroomName).then(function(data) {
+        //             if (data.Users.length == 0) {
+        //                 $scope.noUsersInChatroom = true;
+        //             };
+
+        //             $scope.usersInChatroom = data.Users;
+        //             $scope.usersInChatroomName = data.Name;
+        //         }, function(error) {
+        //             $scope.errorOccurred = true;
+        //             //   errorsService.handleError(error);
+        //         });
+        //     };
+        // }
+
+
+        /* activate clicked links on page refresh*/
+        $scope.getClass = function(path) {
+            if ($location.path().substr(15) === path) {
+                return "active";
+            } else {
+                return "";
+            }
+        };
+
     });
