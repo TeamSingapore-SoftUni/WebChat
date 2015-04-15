@@ -238,7 +238,11 @@
 
             chatroomForJoining.Users.Add(user);
             this.data.SaveChanges();
-            return this.Ok();
+            return this.Ok(new 
+            {
+                ChatoomId = chatroomForJoining.Id,
+                ChatroomName = chatroomForJoining.Name,
+            }); 
         }
 
         // POST api/Chatroom/Leave?name={name}

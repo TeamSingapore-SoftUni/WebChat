@@ -24,6 +24,10 @@ webchatApp.config(['$routeProvider',
 		when('/unauthorized', {
 			templateUrl: 'templates/unauthorized.html'
 		}).
+		 when('/home/chatroom/:id', {
+			templateUrl: 'templates/home.html',
+			controller: 'HomeController'
+        }).
 		otherwise({
 			redirectTo: '/'
 		});

@@ -2,8 +2,12 @@
 var webchatAppControllers = webchatAppControllers || angular.module('webchatAppControllers', []);
 
 webchatApp.controller('HomeController',
-    function homeController($scope, $rootScope, $http, authorizationService, authenticationService,
+    function homeController($scope, $rootScope, $route, $location, $http, authorizationService, authenticationService,
         errorsService, userService, messageService, hubService, chatroomService) {
+        // this is the current chatroom(private chat) id and name to which signalR will send/reciev messages
+        getCurrentChatroomId();
+        getCurrentChatroomName();
+
         $scope.foundChannel = {};
         $scope.searchChatroomClicked = false;
         $scope.chatroomFound = false;
@@ -12,12 +16,31 @@ webchatApp.controller('HomeController',
         $scope.searchUserClicked = false;
         $scope.userFound = false;
 
+        $scope.noChatroomsToDisplay = false;
+
         // get user info to display
         userService.getUserInfo().then(function(data) {
             $scope.userInfo = data;
         }, function(error) {
             errorsService.handleError(error);
         });
+
+        // get user chatrooms to display
+        userService.getUserChatrooms().then(function(data) {
+            if (data.length == 0) {
+                $scope.noChatroomsToDisplay = true;
+            };
+
+            $scope.userChatrooms = data;
+        }, function(error) {
+            errorsService.handleError(error);
+        });
+
+        // load clicked chatroom
+        $scope.loadChatroom = function(chatroomId, chatroomName) {
+            $location.path("/home/chatroom/" + chatroomId);
+            $scope.currentChatroomName = chatroomName;
+        };
 
         // create a chatoom
         $scope.createChatroom = function(chatroomName) {
@@ -34,6 +57,10 @@ webchatApp.controller('HomeController',
                 message.Text = 'Chatroom #' + chatroomName + ' created successfuly';
                 message.Type = 'info';
                 $rootScope.$broadcast('alertMessage', message);
+
+                //reload page and load created chatroom
+                $location.path("/home/chatroom/" + data.chatroom.Id);
+                $scope.currentChatroomName = data.chatroom.Name;
             }, function(error) {
                 $scope.errorOccurred = true;
                 errorsService.handleError(error);
@@ -68,6 +95,10 @@ webchatApp.controller('HomeController',
                 message.Text = 'You have joined #' + chatroomName;
                 message.Type = 'success';
                 $rootScope.$broadcast('alertMessage', message);
+
+                //reload the page and load joined chatroom
+                $location.path("/home/chatroom/" + data.ChatoomId);
+                $scope.currentChatroomName = data.ChatroomName;
             }, function(error) {
                 $scope.errorOccurred = true;
                 errorsService.handleError(error);
@@ -109,14 +140,28 @@ webchatApp.controller('HomeController',
 
         // Save message to database and push notification to SignalR.
         $scope.sendMessage = function(message) {
+            // pass the currentchatroomID to the messigeService sender
+            var currentChatroom = $scope.currentChatroomID;
+            var path = $location.path();
+            if (path !== '/home') {
+                currentChatroom = $location.path().substr(15);
+            };
+
             if (message !== '') {
-                messageService.sendToChatroom(message);
+                messageService.sendToChatroom(message, currentChatroom);
                 clearInputField();
             }
         };
 
         $scope.listMessagesInChatroom = function() {
-            messageService.getMessagesFromChatroom("ba18a49e-605c-4781-8a3e-597a79d8068b")
+            // pass the currentchatroomID to the messigeService receiver
+            var currentChatroom = $scope.currentChatroomID;
+            var path = $location.path();
+            if (path !== '/home') {
+                currentChatroom = $location.path().substr(15);
+            };
+
+            messageService.getMessagesFromChatroom(currentChatroom)
                 .then(function(data) {
                     $scope.chat = data;
                 });
@@ -135,5 +180,31 @@ webchatApp.controller('HomeController',
         // escape user input
         function htmlEntities(str) {
             return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        //get currrentchatroomId
+        function getCurrentChatroomId() {
+            var path = $location.path();
+            if (path !== '/home') {
+                $scope.currentChatroomID = $location.path().substr(15);
+            } else {
+                $scope.currentChatroomID = "ba18a49e-605c-4781-8a3e-597a79d8068b";
+            }
+        }
+
+        //get currrentchatroomName 
+        function getCurrentChatroomName() {
+            var path = $location.path();
+            if (path !== '/home') {
+                var chatroomId = $location.path().substr(15);
+                chatroomService.getChatroomById(chatroomId).then(function(data) {
+                    $scope.currentChatroomName = data.Name;
+                }, function(error) {
+                    $scope.errorOccurred = true;
+                    errorsService.handleError(error);
+                });
+            } else {
+                $scope.currentChatroomName = "Default chatoom."
+            }
         }
     });
