@@ -12,6 +12,17 @@ body {
   height:100%;
 }*/
 
+/*fix mozila buttons bug*/
+@-moz-document url-prefix() {
+    .firefox-button {
+        margin-top: -65px;
+    }
+
+    .firefox-register-button {
+        margin-top: 70px;
+    }
+}
+
 .container{
   width: 95%;
   margin-right: auto;
@@ -91,12 +102,12 @@ body {
 
 #left-side-bar {
   padding-left; 0px !important;
-  height: 500px;
+  height: 520px;
   border-right: 3px solid #95a5a6;
 }
 
 #right-side-bar {
-  height: 500px;
+  height: 520px;
   border-left: 3px solid #95a5a6;
 }
 
@@ -105,7 +116,9 @@ body {
 }
 
 #chatroom-name {
+ margin-top: 5px;
   margin-bottom: 5px;
+  font-size: 21px;
 }
 /*
 #home-page-cotainer{
@@ -142,7 +155,7 @@ body {
 
 #chatbox #messagesbox {
   overflow-y: scroll;
-  height: 500px;
+  height: 440px;
 } 
 
 #chatbox #messagesbox{
@@ -182,6 +195,21 @@ body {
   width: 200px;
   text-decoration: overline;
   text-decoration: underline;
+}
+
+.chatroom-link {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.chatroom-link:hover {
+   cursor: pointer;
+   color: #e74c3c !important;
+}
+
+.pannel-headings {
+  padding-bottom: 5px;
+  text-decoration: underline;;
 }
 
 /*.found-chatroom-li:hover {

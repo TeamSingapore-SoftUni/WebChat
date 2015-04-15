@@ -1,24 +1,19 @@
 <div class="col-md-3 cols-sm-3 col-lg-3" id="left-side-bar">
 	<!-- chatrooms -->
-	<div class="row ">
-		<h3 class="pull-left text-danger">Chatrooms</h3>
-		<div class="col-md-11 col-sm-11 col-lg-11 well">			
-			<ul class="list-no-style" > 
-				<li ng-repeat="chatroom in userChatrooms" id="{{chatroom.Id}}" 
-				ng-click="loadChatroom(chatroom.Id, chatroom.Name)">
-					<a href="">  {{ chatroom.Name }}</a>
-				</li>
-				<li ng-if="noChatroomsToDisplay">
-					<b>No chatrooms</b>
-				</li>
-			</ul>	
+	<div class="row">
+		<h3 class="pull-left pannel-headings">Chatrooms</h3>
+		<div class="list-group col-md-11 cols-sm-11 col-lg-11" >
+			<a class="list-group-item chatroom-link" ng-repeat="chatroom in userChatrooms" id="{{chatroom.Id}}" 
+			ng-click="loadChatroom(chatroom.Id, chatroom.Name)">{{ chatroom.Name }}</a>
 		</div>		
-	</div>
+	</div>	
+	<div class="row text-danger" ng-if="noChatroomsToDisplay">No chatrooms yet.</div>
 	<!-- private chats -->
-	<div class="row ">
-		<h3 class="pull-left">Private chats</h3>
-		<div class="col-md-11 col-sm-11 col-lg-11 well">
-			
-		</div>		
+	<div class="row">
+		<h3 class="pull-left pannel-headings">Private chats</h3>
+		<div class="list-group col-md-11 cols-sm-11 col-lg-11" >
+			<a class="list-group-item chatroom-link">USer 1</a>
+		</div>				
 	</div>
+	<div  class="row text-danger">No private messages yet.</div>
 </div>

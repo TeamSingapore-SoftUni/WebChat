@@ -2,7 +2,7 @@
     <!-- Masovski is working on this
     Main bar with chat messages -->
     <!--Add script to update the page and send messages.-->
-    <h2 class="text-center" id="chatroom-name">{{currentChatroomName }}</h2>
+    <a class="btn btn-default btn-lg btn-block text-center" id="chatroom-name">{{currentChatroomName }}</a>
     <div id="chatbox" ng-init="listMessagesInChatroom()">
         <div id="messagesbox">
             <div class="message" ng-repeat="message in chat"
