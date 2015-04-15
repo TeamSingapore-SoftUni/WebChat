@@ -31,31 +31,6 @@
         {
         }
 
-        // GET api/messages
-        [HttpGet]
-        public IHttpActionResult Get()
-        {
-            // TODO: Create view models for the response.
-            var currentUser =
-                this.Data.Users.Find(HttpContext.Current.User.Identity.GetUserId());
-            var response = 
-                new
-                {
-                    SentMessages = currentUser.SentMessages.Select(m => m.Id),
-                    ReceivedMessages = currentUser.ReceivedMessages.Select(m => m.Id)
-                };
-            
-
-            return this.Ok(response);
-        }
-
-        // GET api/messages/5
-        public IHttpActionResult GetByUserId(Guid id)
-        {
-            var messageById = this.Data.Messages.All().FirstOrDefault(m => m.Id == id);
-            return this.Ok(messageById);
-        }
-
         // POST api/messages/User
         [Route("User")]
         public IHttpActionResult PostMessageToUser(SendToUserBindingModel model)
@@ -77,6 +52,28 @@
             this.Data.SaveChanges();
 
             return this.Ok();
+        }
+
+        [Route("User")]
+        public IHttpActionResult GetConversationWithUser(string userId)
+        {
+            var ownUser = this.Data.Users.Find(HttpContext.Current.User.Identity.GetUserId());
+            var otherUser = this.Data.Users.Find(userId);
+            var conversation =
+                ownUser.SentMessages
+                    .Where(m => m.ReceiverId == otherUser.Id)
+                    .Union(otherUser.SentMessages.Where(m => m.ReceiverId == ownUser.Id))
+                    .OrderBy(m => m.DateTime)
+                    .Select(m => new
+                                 {
+                                     m.Id,
+                                     m.Content,
+                                     m.DateTime,
+                                     SenderName = m.Sender.UserName,
+                                     ReceiverName = m.Receiver.UserName
+                                 });
+
+            return this.Ok(conversation);
         }
 
         // GET api/messages/Chatroom
@@ -120,19 +117,24 @@
             this.Data.SaveChanges();
             this.Hub.Clients.All.broadcastMessage(HttpContext.Current.User.Identity.GetUserName(), message.Content, message.DateTime);
 
-
             return this.Ok();
         }
 
         // PUT api/messages/messageId
+        [Route("")]
         [HttpPut]
-        public void UpdateMessage(int id, [FromBody]string value)
+        public IHttpActionResult UpdateMessage(Guid id, UpdateMessageBindingModel model)
         {
-        }
+            var message = this.Data.Messages.Find(id);
+            if (message.SenderId != HttpContext.Current.User.Identity.GetUserId())
+            {
+                return this.BadRequest("You cannot edit foreign messages.");
+            }
 
-        // DELETE api/message/messageId
-        public void DeleteMessage(int id)
-        {
+            message.Content = model.Content;
+            this.Data.Messages.Update(message);
+            this.Data.SaveChanges();
+            return this.Ok("Message updated successfully!");
         }
     }
 }

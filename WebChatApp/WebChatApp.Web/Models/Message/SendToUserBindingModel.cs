@@ -1,6 +1,5 @@
 ﻿namespace WebChat.Web.Models.Message
 {
-    using System;
     using System.ComponentModel.DataAnnotations;
 
     public class SendToUserBindingModel
