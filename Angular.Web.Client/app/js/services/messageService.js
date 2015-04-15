@@ -21,9 +21,9 @@ webchatApp.factory('messageService',
             return deferred.promise;
         }
 
-        var sendToChatroom = function(message) {
+        var sendToChatroom = function(message, chatroomId) {
             return messageRequester('POST', baseUrl + 'Messages/Chatroom', "Content=" + message +
-                "&ChatroomId=ba18a49e-605c-4781-8a3e-597a79d8068b");
+                "&ChatroomId=" + chatroomId);
         };
 
 

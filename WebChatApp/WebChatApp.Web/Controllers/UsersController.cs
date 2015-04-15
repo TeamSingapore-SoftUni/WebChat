@@ -51,6 +51,24 @@
                 ImageDataUrl = user.ImageDataUrl,
             });        
         }
+
+        // get all user's chatrooms
+        [HttpGet]
+        [Route("chatrooms")]
+        public IHttpActionResult GetUserChatrooms()
+        {
+            var currentUserId = HttpContext.Current.User.Identity.GetUserId();
+            var currentUser = this.data.Users.All()
+                .FirstOrDefault(u => u.Id == currentUserId);
+
+            var chatrooms = currentUser.JoinedChatrooms.Select(c => new
+            {
+                Id = c.Id,
+                Name = c.Name,
+            });
+
+            return this.Ok(chatrooms);
+        }
     }
 
 }

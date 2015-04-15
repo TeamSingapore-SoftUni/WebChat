@@ -103,6 +103,10 @@ body {
 #main-board{
     height: 100%;
 }
+
+#chatroom-name {
+  margin-bottom: 5px;
+}
 /*
 #home-page-cotainer{
   margin-top: 80px;
