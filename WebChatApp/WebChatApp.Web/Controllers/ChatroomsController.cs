@@ -7,14 +7,17 @@
 
     using Microsoft.AspNet.Identity;
 
+    using WebApiAungularWithPushNoti.Controllers;
+
     using WebChat.Data;
     using WebChat.Models;
+    using WebChat.Web.Hubs;
     using WebChat.Web.Models.Account;
     using WebChat.Web.Models.Chatroom;
 
     [Authorize]
     [RoutePrefix("api/Chatroom")]
-    public class ChatroomController : BaseApiController
+    public class ChatroomController : ApiControllerWithHub<MessageHub>
     {
         private IWebChatData data;
 
@@ -57,7 +60,7 @@
             chatroom.Users.Add(user);
             this.data.Chatrooms.Add(chatroom);
             this.data.SaveChanges();
-
+            
             return this.Ok(
                 new
                 {

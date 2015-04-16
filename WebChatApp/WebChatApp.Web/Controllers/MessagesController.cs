@@ -115,7 +115,12 @@
 
             this.Data.Messages.Add(message);
             this.Data.SaveChanges();
-            this.Hub.Clients.All.broadcastMessage(HttpContext.Current.User.Identity.GetUserName(), message.Content, message.DateTime);
+
+
+            this.Hub.Clients.Group(message.ChatroomId.ToString()).broadcastMessage(
+                HttpContext.Current.User.Identity.GetUserName(),
+                message.Content,
+                message.DateTime);
 
             return this.Ok();
         }

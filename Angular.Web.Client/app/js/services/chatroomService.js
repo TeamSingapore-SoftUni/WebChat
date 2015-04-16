@@ -51,6 +51,6 @@ webchatApp.factory('chatroomService',
             getChatroomById: getChatroomById,
             joinChatroom: joinChatroom,
             createChatroom: createChatroom,
-            getUsersInChatroom: getUsersInChatroom,
+            getUsersInChatroom: getUsersInChatroom
         };
     });

@@ -33,7 +33,7 @@ angular.module('SignalR', [])
 		var Hub = this;
 
 		Hub.connection = getConnection(options);
-		Hub.connection.url = 'http://webchat-softuni.azurewebsites.net/signalr';
+		Hub.connection.url = 'http://localhost:5789/signalr';
 		Hub.proxy = Hub.connection.createHubProxy(hubName);
 
 		Hub.on = function (event, fn) {

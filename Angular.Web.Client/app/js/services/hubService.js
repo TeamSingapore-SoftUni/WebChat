@@ -22,7 +22,7 @@ webchatApp.factory('hubService',['$rootScope','Hub', '$timeout', '$filter',
         },
 
         //server side methods
-        methods: ['Send'],
+        methods: ['SendMessageToChatroom', 'SendMessageToUser', 'JoinChatroom', 'LeaveChatroom'],
 
         //query params sent on initial connection
         queryParams:{
@@ -56,11 +56,25 @@ webchatApp.factory('hubService',['$rootScope','Hub', '$timeout', '$filter',
         }
     });
 
-    var send = function (name, message) {
-        hub.Send(name, message); //Calling a server method
+    var sendMessageToChatroom = function(chatroomId, name, message) {
+        hub.SendMessageToChatroom(chatroomId, name, message);
     };
 
+    var sendMessageToUser = function(userId, name, message) {
+        hub.SendMessageToUser(userId, name, message);
+    };
+
+    var joinChatroom = function(chatroomId) {
+        hub.JoinChatroom(chatroomId);
+    };
+
+    var leaveChatroom = function(chatroomId) {
+        hub.LeaveChatroom(chatroomId);
+    };
     return {
-        sendMessage: send
+        sendMessageToChatroom: sendMessageToChatroom,
+        sendMessageToUser: sendMessageToUser,
+        joinChatroom: joinChatroom,
+        leaveChatroom: leaveChatroom
     };
 }]);
