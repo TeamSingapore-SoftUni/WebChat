@@ -120,7 +120,8 @@
             this.Hub.Clients.Group(message.ChatroomId.ToString()).broadcastMessage(
                 HttpContext.Current.User.Identity.GetUserName(),
                 message.Content,
-                message.DateTime);
+                message.DateTime,
+                message.ChatroomId);
 
             return this.Ok();
         }

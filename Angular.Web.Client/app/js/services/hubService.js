@@ -1,12 +1,16 @@
-webchatApp.factory('hubService',['$rootScope','Hub', '$timeout', '$filter', 
-    function($rootScope, Hub, $timeout, $filter){
+webchatApp.factory('hubService', ['$rootScope', 'Hub', '$timeout', '$filter', '$location',
+    function($rootScope, Hub, $timeout, $filter, $location){
 
     //declaring the hub connection
     var hub = new Hub('messageHub', {
 
         //client side methods
         listeners:{
-            'broadcastMessage': function (name, message, dateTime) {
+            'broadcastMessage': function (name, message, dateTime, chatroomId) {
+                if (currentChatroom = $location.path().substr(15) !== chatroomId) {
+                    return;
+                }
+
                 var formatedDateTime = $filter('date')(new Date(dateTime), 'dd-MMM /  HH:mm:ss');
                 var messagesboxElement = $('#messagesbox');
                 var messageElement = 

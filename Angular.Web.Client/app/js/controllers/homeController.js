@@ -249,7 +249,7 @@ webchatApp.controller('HomeController',
                         errorsService.handleError(error);
                     });
                 } else {
-                    $scope.currentChatroomName = "Default chatroom."
+                    $scope.currentChatroomName = "Default chatroom.";
                 }
             }
 
