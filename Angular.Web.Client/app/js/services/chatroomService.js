@@ -41,6 +41,9 @@ webchatApp.factory('chatroomService',
             return chatroomRequester('POST', baseUrl + 'Chatroom/create', 'Name=' + newChatroom);
         };
 
+         var getUsersInChatroom = function(chatroomName) {
+            return chatroomRequester('GET', baseUrl + 'Chatroom/GetUsersByChatroom?name=' + chatroomName, null);
+        };
 
         return {
             getAllChatrooms: getAllChatrooms,
@@ -48,5 +51,6 @@ webchatApp.factory('chatroomService',
             getChatroomById: getChatroomById,
             joinChatroom: joinChatroom,
             createChatroom: createChatroom,
+            getUsersInChatroom: getUsersInChatroom,
         };
     });

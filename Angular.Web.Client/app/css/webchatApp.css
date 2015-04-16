@@ -23,6 +23,10 @@ body {
     }
 }
 
+.active {
+  background-color: #95a5a6 !important;
+}
+
 .container{
   width: 95%;
   margin-right: auto;
@@ -212,6 +216,9 @@ body {
   text-decoration: underline;;
 }
 
+#chatroom-users {
+  margin-left: 15px;
+}
 /*.found-chatroom-li:hover {
  background-color: #95a5a6;
  color: white !important;

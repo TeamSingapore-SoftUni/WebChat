@@ -34,9 +34,9 @@
     <div class="row search-create-right-side-divs" id="found-chatroom">
         <ul>
             <li class="display-inline-div list-no-style found-chatroom-li text-success"
-                ng-if="searchChatroomClicked"> {{ foundChannel.Name }}</li>
+            ng-if="searchChatroomClicked"> {{ foundChannel.Name }}</li>
             <a class="btn btn-success display-inline-div"
-               ng-if="chatroomFound" ng-click="joinChatroom(foundChannel.Name)">Join</a>
+            ng-if="chatroomFound" ng-click="joinChatroom(foundChannel.Name)">Join</a>
         </ul>
     </div>
     <!-- search for user -->
@@ -49,13 +49,20 @@
             <button type="submit" class="btn btn-warning firefox-button" ng-click="searchUser(searchUserName)" >Search</button>
         </div>
     </form>
-        <!-- chat with found user -->
+    <!-- chat with found user -->
     <div class="row search-create-right-side-divs" id="found-user">
         <ul>
             <li class="display-inline-div list-no-style found-chatroom-li text-warning"
-                ng-if="searchUserClicked"> {{ foundUser.UserName }}</li>
+            ng-if="searchUserClicked"> {{ foundUser.UserName }}</li>
             <a class="btn btn-warning display-inline-div"
-               ng-if="userFound" ng-click="chatWithuser(foundUser.Id)">Chat</a>
+            ng-if="userFound" ng-click="chatWithuser(foundUser.Id)">Chat</a>
         </ul>
-    </div>
+    </div>  
+    <!-- list of users in chat -->
+    <div class="row" id="chatroom-users">
+        <h3 class="pull-left pannel-headings">{{ usersInChatroomName }}</h3>
+        <div class="list-group col-md-11 cols-sm-11 col-lg-11" >
+            <a class="list-group-item chatroom-link" ng-repeat="user in usersInChatroom"  >{{ user.UserName }}</a>
+        </div>      
+    </div>  
 </div>

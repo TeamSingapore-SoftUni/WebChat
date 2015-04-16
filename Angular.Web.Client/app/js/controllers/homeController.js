@@ -7,6 +7,7 @@ webchatApp.controller('HomeController',
         // this is the current chatroom(private chat) id and name to which signalR will send/reciev messages
         getCurrentChatroomId();
         getCurrentChatroomName();
+        getUsersInChatroom();
 
         $scope.foundChannel = {};
         $scope.searchChatroomClicked = false;
@@ -36,12 +37,14 @@ webchatApp.controller('HomeController',
             errorsService.handleError(error);
         });
 
-        // load clicked chatroom
+        // load clicked chatroom and list all users in it 
         $scope.loadChatroom = function(chatroomId, chatroomName) {
             $location.path("/home/chatroom/" + chatroomId);
             $scope.currentChatroomName = chatroomName;
         };
 
+        //get users in chatoom
+        
         // create a chatoom
         $scope.createChatroom = function(chatroomName) {
             if (!$scope.newChatroomName) {
@@ -123,10 +126,9 @@ webchatApp.controller('HomeController',
             });
         };
 
-        // search for a user
+        // chat with a user
         // not imlemented
         $scope.chatWithuser = function(userId) {
-            alert(userId);
 
             // userService.getUserByName(searchUserName).then(function(data) {
             //     $scope.foundUser = data;
@@ -136,7 +138,7 @@ webchatApp.controller('HomeController',
             //         Name: "No users found.",
             //     }
             // });
-        };
+        // };
 
 
         // Save message to database and push notification to SignalR.
@@ -242,7 +244,29 @@ webchatApp.controller('HomeController',
                     errorsService.handleError(error);
                 });
             } else {
-                $scope.currentChatroomName = "Default chatoom."
+                $scope.currentChatroomName = "Default chatroom."
             }
         }
+
+        function getUsersInChatroom() {
+            var currentChatroomId = $location.path().substr(15);            
+            if (currentChatroomId !== "") {
+                chatroomService.getChatroomById(currentChatroomId).then(function(data) {
+                    $scope.usersInChatroom = data.Users;
+                    $scope.usersInChatroomName = data.Name;
+                }, function(error) {
+                    $scope.errorOccurred = true;
+                    errorsService.handleError(error);
+                });
+            };
+        }
+
+        /* activate clicked links on page refresh*/
+        $scope.getClass = function(path) {
+            if ($location.path().substr(15) === path) {
+                return "active";
+            } else {
+                return "";
+            }
+        };
     });
