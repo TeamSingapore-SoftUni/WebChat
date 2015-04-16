@@ -146,7 +146,7 @@ webchatApp.controller('HomeController',
         // Save message to database and push notification to SignalR.
             $scope.sendMessage = function(message) {
                 // pass the currentchatroomID to the messigeService sender
-                if (message !== '') {
+                if (message === '') {
                     return;
                 }
                 var currentChatroom = $scope.currentChatroomID;
