@@ -2,13 +2,14 @@
 var webchatAppControllers = webchatAppControllers || angular.module('webchatAppControllers', []);
 
 webchatApp.controller('HomeController',
-    function homeController($scope, $rootScope, $route, $location, $http, authorizationService, authenticationService,
+    function homeController($scope, $rootScope, $route, $location, $http, $modal, authorizationService, authenticationService,
         errorsService, userService, messageService, hubService, chatroomService) {
         // this is the current chatroom(private chat) id and name to which signalR will send/reciev messages
         getCurrentChatroomId();
         getCurrentChatroomName();
         getUsersInChatroom();
 
+        $scope.notDefaultChatroom = false;
         $scope.foundChannel = {};
         $scope.searchChatroomClicked = false;
         $scope.chatroomFound = false;
@@ -108,6 +109,22 @@ webchatApp.controller('HomeController',
             }, function(error) {
                 $scope.errorOccurred = true;
                 errorsService.handleError(error);
+            });
+        };
+
+
+        // dialog for leave chatroom conirmation 
+        $scope.leaveChatroom = function(chatroomName) {
+            var modalInstance = $modal.open({
+                templateUrl: './templates/leave-chatroom-modal.html',
+                controller: 'LeaveChatroomModalController',
+                backdrop: false,
+                keyboard: false,
+                resolve: {
+                    chatroomName: function() {
+                        return chatroomName;
+                    }
+                }
             });
         };
 
@@ -242,6 +259,7 @@ webchatApp.controller('HomeController',
                     chatroomService.getChatroomById(currentChatroomId).then(function(data) {
                         $scope.usersInChatroom = data.Users;
                         $scope.usersInChatroomName = data.Name;
+                    $scope.notDefaultChatroom = true;
                     }, function(error) {
                         $scope.errorOccurred = true;
                         errorsService.handleError(error);
