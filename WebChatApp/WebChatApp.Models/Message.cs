@@ -16,7 +16,8 @@
         public Guid Id { get; set; }
 
         [Required]
-        [MaxLength(100)]
+        [MinLength(1, ErrorMessage = "Your message should contain at least 1 symbol.")]
+        [MaxLength(500, ErrorMessage = "The message should be less than 500 symbols long.")]
         public string Content { get; set; }
 
         [Required]
