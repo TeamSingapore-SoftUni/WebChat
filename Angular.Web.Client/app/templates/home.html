@@ -1,12 +1,111 @@
 
 <div class="row" id="home-page-cotainer">
-	<left-sidebar>
-
-	</left-sidebar>
-	<main-board>
-
-	</main-board>
-	<right-sidebar>
-
-	</right-sidebar>
+<div class="col-md-3 cols-sm-3 col-lg-3" id="left-side-bar">
+	<!-- chatrooms -->
+	<div class="row">
+		<h3 class="pull-left pannel-headings">Chatrooms</h3>
+		<div class="list-group col-md-11 cols-sm-11 col-lg-11" >
+			<a class="list-group-item chatroom-link" ng-repeat="chatroom in userChatrooms" id="{{chatroom.Id}}" 
+			ng-click="loadChatroom(chatroom.Id, chatroom.Name)" ng-class="getClass(chatroom.Id)">{{ chatroom.Name }}</a>
+		</div>		
+	</div>	
+	<div class="row text-danger" ng-if="noChatroomsToDisplay">No chatrooms yet.</div>
+	<!-- private chats -->
+	<div class="row">
+		<h3 class="pull-left pannel-headings">Private chats</h3>
+		<div class="list-group col-md-11 cols-sm-11 col-lg-11" >
+			<a class="list-group-item chatroom-link">USer 1</a>
+		</div>				
+	</div>
+	<div  class="row text-danger">No private messages yet.</div>
+</div>
+<div class="col-md-6 cols-sm-6 col-lg-6" id="main-board">
+    <!-- Masovski is working on this
+    Main bar with chat messages -->
+    <!--Add script to update the page and send messages.-->
+    <a class="btn btn-default btn-lg btn-block text-center" id="chatroom-name">{{currentChatroomName}}</a>
+    <div id="chatbox" ng-init="listMessagesInChatroom()">
+        <div id="messagesbox">
+            <div class="message" ng-repeat="message in chat"
+            on-finish-render-messages>[{{message.DateTime | date: 'dd-MMM /  HH:mm:ss'}}] <strong>{{message.SenderName}}</strong>: {{message.Content}}</div>
+        </div>
+        <div id="input-messagebox">
+            <input type="text" ng-model="myMessage" placeholder="Enter your message here..." ng-enter="sendMessage(myMessage)" />
+            <input  class="btn-default" ng-click="sendMessage(myMessage)" type="submit" value="Send" />
+        </div>
+    </div>
+    <div class="row" id="leave-chat-button">
+        <a class="btn btn-danger pull-right" ng-click="leaveChatroom(currentChatroomName)" ng-if="notDefaultChatroom">
+            Leave chat
+        </a>
+    </div>
+</div>
+<div class="col-md-3 cols-sm-3 col-lg-3" id="right-side-bar">
+    <!-- user info -->
+    <div class="row user-info">
+        <div class="col-md-11">
+            <h3 class="text-primary pannel-headings">Profile</h3>
+            <ul class="list-no-style">
+                <li> <b> Username:</b> {{ userInfo.UserName}}</li>
+                <li> <b> Full name: </b>{{ userInfo.FullName}}</li>
+                <li> <b> Email: </b> {{ userInfo.Email}}</li>
+            </ul>
+        </div>
+    </div>
+    <!-- create chatroom -->
+    <form class="row search-create-right-side-divs"  id="create-chatroom">
+        <p class="text-info">Create a chatroom: </p>
+        <div class="form-group display-inline-div">
+            <input type="text" class="form-control" placeholder="Chatroom name" ng-model="newChatroomName" required>
+        </div>
+        <div class="form-group display-inline-div">
+            <button type="submit" class="btn btn-info firefox-button" ng-click="createChatroom(newChatroomName)" >Create</button>
+        </div>
+    </form>
+    <!-- search chatroom -->
+    <form class="row search-create-right-side-divs" role="search" id="search-channel">
+        <p class="text-success">Search for a chatroom: </p>
+        <div class="form-group display-inline-div">
+            <input type="text" class="form-control" placeholder="Chatroom" ng-model="chatroomName"  required>
+        </div>
+        <div class="form-group display-inline-div">
+            <button type="submit" class="btn btn-success firefox-button" ng-click="searchChatroom(chatroomName)" >Search</button>
+        </div>
+    </form>
+    <!-- join chatroom -->
+    <div class="row search-create-right-side-divs" id="found-chatroom">
+        <ul>
+            <li class="display-inline-div list-no-style found-chatroom-li text-success"
+            ng-if="searchChatroomClicked"> {{ foundChannel.Name }}</li>
+            <a class="btn btn-success display-inline-div"
+            ng-if="chatroomFound" ng-click="joinChatroom(foundChannel.Name)">Join</a>
+        </ul>
+    </div>
+    <!-- search for user -->
+    <form class="row search-create-right-side-divs" role="search" id="search-user">
+        <p class="text-warning">Search for a user: </p>
+        <div class="form-group display-inline-div">
+            <input type="text" class="form-control" placeholder="Username" ng-model="searchUserName" required>
+        </div>
+        <div class="form-group display-inline-div">
+            <button type="submit" class="btn btn-warning firefox-button" ng-click="searchUser(searchUserName)" >Search</button>
+        </div>
+    </form>
+    <!-- chat with found user -->
+    <div class="row search-create-right-side-divs" id="found-user">
+        <ul>
+            <li class="display-inline-div list-no-style found-chatroom-li text-warning"
+            ng-if="searchUserClicked"> {{ foundUser.UserName }}</li>
+            <a class="btn btn-warning display-inline-div"
+            ng-if="userFound" ng-click="chatWithuser(foundUser.Id)">Chat</a>
+        </ul>
+    </div>  
+    <!-- list of users in chat -->
+    <div class="row" id="chatroom-users">
+        <h3 class="pull-left pannel-headings">{{ usersInChatroomName }}</h3>
+        <div class="list-group col-md-11 cols-sm-11 col-lg-11" >
+            <a class="list-group-item chatroom-link" ng-repeat="user in usersInChatroom"  >{{ user.UserName }}</a>
+        </div>      
+    </div>  
+</div>
 </div>
