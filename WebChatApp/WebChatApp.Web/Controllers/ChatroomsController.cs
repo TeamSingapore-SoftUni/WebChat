@@ -243,7 +243,7 @@
             this.data.SaveChanges();
             return this.Ok(new 
             {
-                ChatoomId = chatroomForJoining.Id,
+                ChatroomId = chatroomForJoining.Id,
                 ChatroomName = chatroomForJoining.Name,
             }); 
         }

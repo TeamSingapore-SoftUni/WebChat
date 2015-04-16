@@ -28,7 +28,7 @@ webchatApp.controller('HomeController',
 
         // get user chatrooms to display
         userService.getUserChatrooms().then(function(data) {
-            if (data.length == 0) {
+            if (data.length === 0) {
                 $scope.noChatroomsToDisplay = true;
             };
 
@@ -40,6 +40,7 @@ webchatApp.controller('HomeController',
         // load clicked chatroom and list all users in it 
         $scope.loadChatroom = function(chatroomId, chatroomName) {
             $location.path("/home/chatroom/" + chatroomId);
+            hubService.joinChatroom(chatroomId);
             $scope.currentChatroomName = chatroomName;
         };
 
@@ -100,9 +101,9 @@ webchatApp.controller('HomeController',
                 message.Type = 'success';
                 $rootScope.$broadcast('alertMessage', message);
                 hubService.joinChatroom(data.ChatroomId);
-                
+                console.log(data.chatroomId);
                 //reload the page and load joined chatroom
-                $location.path("/home/chatroom/" + data.ChatoomId);
+                $location.path("/home/chatroom/" + data.ChatroomId);
                 $scope.currentChatroomName = data.ChatroomName;
             }, function(error) {
                 $scope.errorOccurred = true;

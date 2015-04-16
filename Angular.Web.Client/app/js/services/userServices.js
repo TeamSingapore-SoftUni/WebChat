@@ -31,12 +31,9 @@ webchatApp.factory('userService', function($http, $q, baseUrl, authorizationServ
         return userRequester('GET', baseUrl + 'Users/chatrooms', null);
     };
 
-
-
     return {
         getUserInfo: getUserInfo,
         getUserByName: getUserByName,
-        getUserChatrooms: getUserChatrooms,
-
+        getUserChatrooms: getUserChatrooms
     };
 });
