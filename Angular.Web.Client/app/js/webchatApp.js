@@ -41,5 +41,5 @@ webchatApp.config(['$routeProvider',
 		}
 	});
 })
-.constant('baseUrl', 'http://localhost:5789/api/')
+.constant('baseUrl', 'http://webchat-softuni.azurewebsites.net/api/')
 .constant('ajaxErrorText', 'Something went wrong, please try again or refresh the page.');

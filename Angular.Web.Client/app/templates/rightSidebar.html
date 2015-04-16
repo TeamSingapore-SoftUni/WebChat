@@ -59,10 +59,10 @@
         </ul>
     </div>  
     <!-- list of users in chat -->
-    <div class="row">
+    <div class="row" id="chatroom-users">
         <h3 class="pull-left pannel-headings">{{ usersInChatroomName }}</h3>
         <div class="list-group col-md-11 cols-sm-11 col-lg-11" >
-            <a class="list-group-item chatroom-link" ng-repeat="user in usersInChatroom"  >{{ user.Username }}</a>
+            <a class="list-group-item chatroom-link" ng-repeat="user in usersInChatroom"  >{{ user.UserName }}</a>
         </div>      
     </div>  
 </div>

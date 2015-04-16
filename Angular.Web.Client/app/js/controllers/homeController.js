@@ -7,6 +7,7 @@ webchatApp.controller('HomeController',
         // this is the current chatroom(private chat) id and name to which signalR will send/reciev messages
         getCurrentChatroomId();
         getCurrentChatroomName();
+        getUsersInChatroom();
 
         $scope.foundChannel = {};
         $scope.searchChatroomClicked = false;
@@ -43,8 +44,7 @@ webchatApp.controller('HomeController',
         };
 
         //get users in chatoom
-       // getUsersInChatroom();
-
+        
         // create a chatoom
         $scope.createChatroom = function(chatroomName) {
             if (!$scope.newChatroomName) {
@@ -126,19 +126,18 @@ webchatApp.controller('HomeController',
             });
         };
 
-        // search for a user
+        // chat with a user
         // not imlemented
-        $scope.chatWithuser = function(userId) {
-            alert(userId);
-            // userService.getUserByName(searchUserName).then(function(data) {
-            //     $scope.foundUser = data;
-            //     $scope.userFound = true;
-            // }, function(error) {              
-            //     $scope.foundUser = {
-            //         Name: "No users found.",
-            //     }
-            // });
-        };
+        // $scope.chatWithuser = function(userId) {
+        //     userService.getUserByName(searchUserName).then(function(data) {
+        //         $scope.foundUser = data;
+        //         $scope.userFound = true;
+        //     }, function(error) {              
+        //         $scope.foundUser = {
+        //             Name: "No users found.",
+        //         }
+        //     });
+        // };
 
 
         // Save message to database and push notification to SignalR.
@@ -207,27 +206,22 @@ webchatApp.controller('HomeController',
                     errorsService.handleError(error);
                 });
             } else {
-                $scope.currentChatroomName = "Default chatoom."
+                $scope.currentChatroomName = "Default chatroom."
             }
         }
 
-        // function getUsersInChatroom() {
-        //     var currentChatroomName = $scope.currentChatroomName;
-        //     if (currentChatroomName !== "Default chatoom.") {
-        //         chatroomService.getUsersInChatroom(currentChatroomName).then(function(data) {
-        //             if (data.Users.length == 0) {
-        //                 $scope.noUsersInChatroom = true;
-        //             };
-
-        //             $scope.usersInChatroom = data.Users;
-        //             $scope.usersInChatroomName = data.Name;
-        //         }, function(error) {
-        //             $scope.errorOccurred = true;
-        //             //   errorsService.handleError(error);
-        //         });
-        //     };
-        // }
-
+        function getUsersInChatroom() {
+            var currentChatroomId = $location.path().substr(15);            
+            if (currentChatroomId !== "") {
+                chatroomService.getChatroomById(currentChatroomId).then(function(data) {
+                    $scope.usersInChatroom = data.Users;
+                    $scope.usersInChatroomName = data.Name;
+                }, function(error) {
+                    $scope.errorOccurred = true;
+                    errorsService.handleError(error);
+                });
+            };
+        }
 
         /* activate clicked links on page refresh*/
         $scope.getClass = function(path) {
@@ -237,5 +231,4 @@ webchatApp.controller('HomeController',
                 return "";
             }
         };
-
     });
