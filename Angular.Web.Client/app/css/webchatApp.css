@@ -216,6 +216,10 @@ body {
   text-decoration: underline;;
 }
 
+#leave-chat-button {
+  margin-top: 5px;
+}
+
 #chatroom-users {
   margin-left: 15px;
 }
@@ -223,3 +227,23 @@ body {
  background-color: #95a5a6;
  color: white !important;
 }*/
+
+/*back to top button */
+.back-to-top {
+    position: fixed;
+    bottom: 2em;
+    right: 0px;
+    text-decoration: none;
+    color: black;
+    background-color: #2fa4e7 !important;
+    font-size: 12px;
+    padding: 1em;
+    display: none;
+    cursor: pointer;
+}
+
+.back-to-top:hover {    
+    background-color: #2fa4e7 !important;
+    color: white;
+    cursor: pointer;
+}

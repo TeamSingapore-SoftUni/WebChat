@@ -41,8 +41,12 @@ webchatApp.factory('chatroomService',
             return chatroomRequester('POST', baseUrl + 'Chatroom/create', 'Name=' + newChatroom);
         };
 
-         var getUsersInChatroom = function(chatroomName) {
+        var getUsersInChatroom = function(chatroomName) {
             return chatroomRequester('GET', baseUrl + 'Chatroom/GetUsersByChatroom?name=' + chatroomName, null);
+        };
+
+        var leaveChatroom = function(chatroomName) {
+            return chatroomRequester('POST', baseUrl + 'Chatroom/Leave?name=' + chatroomName, null);
         };
 
         return {
@@ -51,6 +55,7 @@ webchatApp.factory('chatroomService',
             getChatroomById: getChatroomById,
             joinChatroom: joinChatroom,
             createChatroom: createChatroom,
-            getUsersInChatroom: getUsersInChatroom
+            getUsersInChatroom: getUsersInChatroom,
+            leaveChatroom: leaveChatroom,
         };
     });

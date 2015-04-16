@@ -6,11 +6,15 @@
     <div id="chatbox" ng-init="listMessagesInChatroom()">
         <div id="messagesbox">
             <div class="message" ng-repeat="message in chat"
-                 on-finish-render-messages>[{{message.DateTime | date: 'dd-MMM /  HH:mm:ss'}}] <strong>{{message.SenderName}}</strong>: {{message.Content}}</div>
+            on-finish-render-messages>[{{message.DateTime | date: 'dd-MMM /  HH:mm:ss'}}] <strong>{{message.SenderName}}</strong>: {{message.Content}}</div>
         </div>
         <div id="input-messagebox">
             <input type="text" ng-model="myMessage" placeholder="Enter your message here..." ng-enter="sendMessage(myMessage)" />
             <input  class="btn-default" ng-click="sendMessage(myMessage)" type="submit" value="Send" />
         </div>
     </div>
-</div>
+    <div class="row" id="leave-chat-button">
+        <a class="btn btn-danger pull-right" ng-click="leaveChatroom(currentChatroomName)" ng-if="notDefaultChatroom">
+            Leave chat</a>
+        </div>
+    </div>
