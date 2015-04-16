@@ -127,6 +127,7 @@ webchatApp.controller('HomeController',
         // not imlemented
         $scope.chatWithuser = function(userId) {
             alert(userId);
+
             // userService.getUserByName(searchUserName).then(function(data) {
             //     $scope.foundUser = data;
             //     $scope.userFound = true;
@@ -162,6 +163,43 @@ webchatApp.controller('HomeController',
             };
 
             messageService.getMessagesFromChatroom(currentChatroom)
+                .then(function(data) {
+                    $scope.chat = data;
+                });
+        }
+
+         $scope.listMessagesInChatroom = function() {
+            // pass the currentchatroomID to the messigeService receiver
+            var currentChatroom = $scope.currentChatroomID;
+            var path = $location.path();
+            var chatroomPath = $location.path().substr(6, 8);
+            var userPath = $location.path().substr(6, 4);
+            if (path !== '/home' && chatroomPath == 'chatroom') {
+                currentChatroom = $location.path().substr(15);
+
+                messageService.getMessagesFromChatroom(currentChatroom)
+                .then(function(data) {
+                    $scope.chat = data;
+                });
+            } else if(path !== '/home' && userPath == 'user') {
+                currentUser = $location.path().substr(15);
+
+                messageService.getMessagesWithUser(currentUser)
+                .then(function(data) {
+                    $scope.chat = data;
+                });
+            }
+        }
+
+        $scope.listMessagesWithUser = function(userId) {
+            // pass the currentchatroomID to the messigeService receiver
+            var currentUser = $scope.currentChatroomID;
+            var path = $location.path();
+            if (path !== '/home') {
+                currentChatroom = $location.path().substr(15);
+            };
+
+            messageService.getMessagesWithUser(currentUser)
                 .then(function(data) {
                     $scope.chat = data;
                 });

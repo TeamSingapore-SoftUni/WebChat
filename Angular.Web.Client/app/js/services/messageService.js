@@ -21,23 +21,33 @@ webchatApp.factory('messageService',
             return deferred.promise;
         }
 
+        var getMessagesFromChatroom = function(chatroomId) {
+            return messageRequester('GET', baseUrl + 'Messages/Chatroom?chatroomId=' + chatroomId);
+        }
+
+        var getMessagesWithUser = function(userId) {
+            return messageRequester('GET', baseUrl + 'Messages/User?userId=' + userId);
+        }
+
         var sendToChatroom = function(message, chatroomId) {
             return messageRequester('POST', baseUrl + 'Messages/Chatroom', "Content=" + message +
                 "&ChatroomId=" + chatroomId);
         };
 
-
-        function sendToUser(userId, message)
-        {
-
+        var sendToUser = function(message, userId) {
+            return messageRequester('POST', baseUrl + 'Messages/User', "Content=" + message +
+                "&userId=" + userId);
         }
 
-        function getMessagesFromChatroom(chatroomId) {
-            return messageRequester('GET', baseUrl + 'Messages/Chatroom?chatroomId=' + chatroomId);
+        var editMessage = function(message, messageId) {
+            return messageRequester('PUT', baseUrl + 'Messages?id=' + messageId, "Content=" + message);
         }
 
         return {
+            getMessagesFromChatroom: getMessagesFromChatroom,
+            getMessagesWithUser: getMessagesWithUser,
             sendToChatroom: sendToChatroom,
-            getMessagesFromChatroom: getMessagesFromChatroom
+            sendToUser: sendToUser,
+            editMessage: editMessage
         };
 });

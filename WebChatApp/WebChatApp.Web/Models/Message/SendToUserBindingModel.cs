@@ -5,7 +5,7 @@
     public class SendToUserBindingModel
     {
         [Required]
-        [Display(Name = "Message")]
+        [Display(Name = "Content")]
         public string Content { get; set; }
 
         [Required]
